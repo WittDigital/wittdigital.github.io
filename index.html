@@ -6,43 +6,26 @@
     <title>wittdigital // PRECISION_ENGINEERING</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
-<script>
-    const text = "wittdigital // PRECISION_ENGINEERING";
-    const speed = 100; // 打字速度（毫秒）
-    let i = 0;
-
-    function typeWriter() {
-        if (i < text.length) {
-            document.getElementById("typewriter-title").innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, speed);
-        }
-    }
-
-    // 頁面載入後開始執行
-    window.onload = typeWriter;
-</script>
-    
 <body>
 
     <nav>
-    <h1>wittdigital</h1>
-    <a href="#home">SYSTEM_HOME</a>
-    <a href="#apps">APP_DEVELOPMENT</a>
-    <a href="#bots">BOT_INTEGRATION</a>
-</nav>
+        <h1>wittdigital</h1>
+        <a href="#home">SYSTEM_HOME</a>
+        <a href="#apps">APP_DEVELOPMENT</a>
+        <a href="#bots">BOT_INTEGRATION</a>
+    </nav>
 
     <main>
-        <div class="header-status">LIVE_STREAM_ACTIVE // 2026_VERSION</div>
-        <h2 id="typewriter-title">工程作品成績板</h2>
-        <p>在這裡，我將智慧轉化為代碼，如同流水尋找源頭，不斷優化與創造。</p>
+        <section id="home">
+            <div class="header-status">LIVE_STREAM_ACTIVE // 2026_VERSION</div>
+            <h2 id="typewriter-title"></h2> <p>在這裡，我將智慧轉化為代碼，如同流水尋找源頭，不斷優化與創造。</p>
+        </section>
 
         <div class="project-grid">
             <div class="card">
                 <h3>工程報價系統 v1.2.3</h3>
                 <p>結合精密的稅務邏輯與 PDF 自動化技術，專為提升工程效率而生。</p>
-                <a href="#" class="btn">查看專案</a>
+                <a href="#apps" class="btn">查看詳細</a>
             </div>
 
             <div class="card">
@@ -52,19 +35,32 @@
             </div>
         </div>
 
-        <div class="watermark">DESIGNED BY WITTDIGITAL / CORE_TYPE: WATER</div>
-        <section id="home">
-        <div class="header-status">LIVE_STREAM_ACTIVE // 2026_VERSION</div>
-        <h2 id="typewriter-title"></h2> </section>
+        <section id="apps" style="margin-top: 100px;">
+            <div class="header-status">[FILE_PATH: /APP_DEVELOPMENT]</div>
+            <h3>工程報價系統 v1.2.3</h3>
+            <div class="app-screenshot">
+                <img src="https://via.placeholder.com/500x300" alt="App Preview" style="width:100%">
+            </div>
+            <p>這是針對工程行與開發者設計的自動化報價工具，支援 Expo 與 React Native 環境。</p>
+        </section>
 
-    <section id="apps" style="margin-top: 100px;">
-        <h3>[APP_DEVELOPMENT]</h3>
-        <div class="app-screenshot">
-            <img src="https://via.placeholder.com/500x300" alt="App Preview" style="width:100%">
-        </div>
-        <p>工程報價系統 v1.2.3 的詳細說明...</p>
-    </section>
+        <div class="watermark">DESIGNED BY WITTDIGITAL / CORE_TYPE: WATER</div>
     </main>
 
+    <script>
+        const text = "wittdigital // PRECISION_ENGINEERING";
+        const speed = 100;
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter-title").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        window.onload = typeWriter;
+    </script>
 </body>
 </html>
