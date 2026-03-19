@@ -1,17 +1,12 @@
-/* =========================================
-   1. 核心變數與基礎設定
-   ========================================= */
 :root {
     --bg-color: #050505;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
-    --accent-1: #6366f1; /* 靛藍 */
-    --accent-2: #ec4899; /* 粉紅 */
-    --accent-3: #8b5cf6; /* 紫色 */
+    --accent-1: #6366f1;
+    --accent-2: #ec4899;
+    --accent-3: #8b5cf6;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.05);
-    --font-main: 'Noto Sans TC', 'Outfit', sans-serif;
-    --font-code: 'Fira Code', monospace;
 }
 
 * {
@@ -22,16 +17,14 @@
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: 'Noto Sans TC', 'Outfit', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
     overflow-x: hidden;
     line-height: 1.6;
 }
 
-/* =========================================
-   2. 背景動態流光效果
-   ========================================= */
+/* Background Effects */
 .bg-elements {
     position: fixed;
     top: 0;
@@ -53,18 +46,51 @@ body {
     animation: float 20s infinite ease-in-out alternate;
 }
 
-.glow-1 { top: -10%; left: -10%; background: radial-gradient(circle, var(--accent-1), transparent 70%); }
-.glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--accent-2), transparent 70%); animation-delay: -5s; }
-.glow-3 { top: 40%; left: 40%; background: radial-gradient(circle, var(--accent-3), transparent 70%); opacity: 0.2; animation-delay: -10s; }
+.glow-1 {
+    top: -10%;
+    left: -10%;
+    background: radial-gradient(circle, var(--accent-1), transparent 70%);
+}
+
+.glow-2 {
+    bottom: -20%;
+    right: -10%;
+    background: radial-gradient(circle, var(--accent-2), transparent 70%);
+    animation-delay: -5s;
+}
+
+.glow-3 {
+    top: 40%;
+    left: 40%;
+    background: radial-gradient(circle, var(--accent-3), transparent 70%);
+    opacity: 0.2;
+    animation-delay: -10s;
+}
 
 @keyframes float {
     0% { transform: translate(0, 0) scale(1); }
     100% { transform: translate(100px, 50px) scale(1.2); }
 }
 
-/* =========================================
-   3. 導覽列 (Navbar)
-   ========================================= */
+/* Glassmorphism */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation */
 .navbar {
     position: fixed;
     top: 0;
@@ -73,12 +99,11 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000;
+    z-index: 100;
     background: rgba(5, 5, 5, 0.5);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--glass-border);
-    transition: all 0.3s ease;
+    transition: padding 0.3s ease;
 }
 
 .logo {
@@ -88,12 +113,15 @@ body {
     letter-spacing: 1px;
 }
 
-.logo span { color: var(--accent-1); }
+.logo span {
+    color: var(--accent-1);
+}
 
 .nav-links {
     display: flex;
     list-style: none;
     gap: 2rem;
+    justify-content: center;
 }
 
 .nav-links a {
@@ -116,38 +144,456 @@ body {
     transition: width 0.3s ease;
 }
 
-.nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
-.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+.nav-links a:hover {
+    color: var(--text-primary);
+}
 
-/* =========================================
-   4. Bot 狀態標籤 (偵測系統專用)
-   ========================================= */
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 5%;
+    position: relative;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.title {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+}
+
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-3) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.cta-button:hover .arrow {
+    transform: translateY(3px);
+}
+
+/* Sections */
+section {
+    padding: 8rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-title {
+    /* 1. 核心置中邏輯 */
+    display: table;           /* 讓寬度剛好等於文字長度 */
+    margin: 0 auto 4rem auto; /* 左右 auto 會自動平分剩餘空間，達成完美置中 */
+    
+    /* 2. 移除原本可能導致位移的代碼 */
+    position: relative;
+    left: 0;                  /* 歸零 */
+    transform: none;          /* 移除位移 */
+    
+    /* 3. 樣式維持 */
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* 裝飾底線修正 */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%); /* 只有底線需要針對文字寬度做位移 */
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+    border-radius: 2px;
+}
+
+/* 針對手機版 (螢幕寬度小於 768px) 的微調 */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.8rem;    /* 手機版字體縮小一點比較精緻 */
+        margin-bottom: 2.5rem;
+        padding: 0 15px;      /* 增加一點左右內距，防止文字貼到螢幕邊緣 */
+    }
+}
+
+/* Intro */
+.intro-section .glass-card {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intro-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.intro-section p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Timeline */
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent-1), var(--accent-2), var(--accent-3));
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 3rem;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 11px;
+    top: 24px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-color);
+    border: 4px solid var(--accent-1);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+    z-index: 1;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.timeline-item:hover .timeline-dot {
+    background: var(--accent-1);
+    transform: scale(1.2);
+}
+
+.timeline-item:nth-child(even) .timeline-dot {
+    border-color: var(--accent-2);
+}
+
+.timeline-item:nth-child(even):hover .timeline-dot {
+    background: var(--accent-2);
+}
+
+.timeline-item:nth-child(3n) .timeline-dot {
+    border-color: var(--accent-3);
+}
+
+.timeline-item:nth-child(3n):hover .timeline-dot {
+    background: var(--accent-3);
+}
+
+.year {
+    display: inline-block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-1);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 1rem;
+}
+
+.timeline-item:nth-child(even) .year {
+    color: var(--accent-2);
+    background: rgba(236, 72, 153, 0.1);
+}
+
+.timeline-item:nth-child(3n) .year {
+    color: var(--accent-3);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.timeline-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.timeline-content p {
+    color: var(--text-secondary);
+}
+
+/* Future Section */
+.future-card {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+}
+
+.future-card h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.future-card p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 3rem 5%;
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .timeline-container::before {
+        left: 10px;
+    }
+    .timeline-item {
+        padding-left: 40px;
+    }
+    .timeline-dot {
+        left: 1px;
+    }
+    section {
+        padding: 5rem 5%;
+    }
+    .title {
+        font-size: 2.8rem;
+    }
+}
+
+/* 狀態標籤基礎樣式 */
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 16px;
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--glass-border);
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    font-family: var(--font-code);
-    margin-bottom: 1.5rem;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    font-family: monospace;
 }
 
 /* 狀態圓點 */
 .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #888; /* 預設灰色 */
+    transition: all 0.3s ease;
+}
+
+/* 在線時的綠燈效果 (呼吸燈) */
+/* 修正後的 CSS 權重 */
+.badge.online {
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: #00ff41;
+}
+
+.badge.offline {
+    background: rgba(255, 62, 62, 0.1);
+    border: 1px solid rgba(255, 62, 62, 0.3);
+    color: #ff3e3e;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+#bot-status-badge.online .status-dot {
+    background-color: #00ff41; /* 綠色 */
+    box-shadow: 0 0 10px #00ff41;
+}
+
+#bot-status-badge.offline .status-dot {
+    background-color: #ff3e3e; /* 紅色 */
+    box-shadow: 0 0 10px #ff3e3e;
+}
+
+.status-dot {
+    display: inline-block;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #888;
-    display: inline-block;
+    margin-right: 8px;
+    background-color: #888; /* 預設灰燈 */
 }
 
-/* 偵測中：文字呼吸感 */
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem; /* 縮小手機版的標題字體 */
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 10px; /* 增加兩側間距避免貼邊 */
+    }
+
+    .hero {
+        padding: 0 20px;
+    }
+
+    /* 讓狀態標籤在手機上更顯眼 */
+    .badge {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* 讓 Logo 與連結上下排列 */
+        padding: 1rem 0;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1rem; /* 縮小連結間距 */
+        margin-top: 10px;
+        overflow-x: auto; /* 如果連結太多，允許左右滑動 */
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+        white-space: nowrap; /* 防止連結文字換行 */
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline-container::before {
+        left: 15px; /* 把中間的那條線往左移 */
+    }
+
+    .timeline-item {
+        padding-left: 35px; /* 縮小縮進 */
+    }
+
+    .timeline-dot {
+        left: 6px; /* 調整圓點位置 */
+        width: 16px;
+        height: 16px;
+    }
+
+    .glass-card {
+        padding: 1.5rem; /* 縮小卡片的內邊距 */
+    }
+}
+
+@media (max-width: 768px) {
+    .glow {
+        width: 300px;
+        height: 300px;
+        filter: blur(80px); /* 減輕手機 GPU 負擔 */
+    }
+}
+
+/* 讓點點動起來的動畫 */
+.loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%   { content: ''; }
+    25%  { content: '.'; }
+    50%  { content: '..'; }
+    75%  { content: '...'; }
+    100% { content: ''; }
+}
+
+/* 讓整行文字有呼吸閃爍感 (選用) */
 .detecting {
+    opacity: 1;
     animation: pulse-text 1.5s infinite ease-in-out;
 }
 
@@ -156,7 +602,7 @@ body {
     50% { opacity: 1; }
 }
 
-/* 偵測中：點點動畫 */
+/* --- 僅新增：Bot 狀態偵測動畫 (不影響原佈局) --- */
 .loading-dots::after {
     content: '';
     display: inline-block;
@@ -172,216 +618,46 @@ body {
     75%  { content: '...'; }
 }
 
-/* 在線與離線顏色強制定義 */
-.badge.online {
-    background: rgba(0, 255, 65, 0.1) !important;
-    border: 1px solid rgba(0, 255, 65, 0.3) !important;
-    color: #00ff41 !important;
-}
-
-.badge.online .status-dot {
-    background-color: #00ff41;
-    box-shadow: 0 0 10px #00ff41;
-    animation: pulse-dot 2s infinite;
-}
-
-.badge.offline {
-    background: rgba(255, 62, 62, 0.1) !important;
-    border: 1px solid rgba(255, 62, 62, 0.3) !important;
-    color: #ff3e3e !important;
-}
-
-.badge.offline .status-dot {
-    background-color: #ff3e3e;
-    box-shadow: 0 0 10px #ff3e3e;
-}
-
-@keyframes pulse-dot {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* =========================================
-   5. 通用區塊與標題
-   ========================================= */
-section {
-    padding: 8rem 5%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-title {
-    display: table;
-    margin: 0 auto 4rem auto;
-    position: relative;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-align: center;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-    border-radius: 2px;
-}
-
-.glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 2.5rem;
-    transition: all 0.3s ease;
-}
-
-.glass-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-/* =========================================
-   6. 指令介紹頁面 (Commands Page)
-   ========================================= */
-.commands-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-.command-card {
-    padding: 0 !important;
-    overflow: hidden;
-}
-
-.terminal-header {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 12px 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.terminal-header .dot { width: 12px; height: 12px; border-radius: 50%; }
-.dot.red { background: #ff5f56; }
-.dot.yellow { background: #ffbd2e; }
-.dot.green { background: #27c93f; }
-
-.command-name {
-    margin-left: 10px;
-    font-family: var(--font-code);
-    font-size: 0.9rem;
-    color: var(--accent-1);
-}
-
-.command-demo img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.command-info { padding: 1.5rem; }
-.command-info h3 { margin-bottom: 0.5rem; font-size: 1.2rem; }
-.command-info p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; }
-
-.code-badge {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--accent-1);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-family: var(--font-code);
-    font-size: 0.8rem;
-}
-
-/* 1. 點點動畫 */
-.loading-dots::after {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    text-align: left;
-    animation: dots-animation 1.5s infinite;
-}
-
-@keyframes dots-animation {
-    0%   { content: ''; }
-    25%  { content: '.'; }
-    50%  { content: '..'; }
-    75%  { content: '...'; }
-    100% { content: ''; }
-}
-
-/* 2. 偵測中的呼吸感 */
 .detecting {
-    animation: pulse-text 1.5s infinite ease-in-out;
+    animation: pulse-text-witt 1.5s infinite ease-in-out;
 }
 
-@keyframes pulse-text {
-    0%, 100% { opacity: 0.5; }
+@keyframes pulse-text-witt {
+    0%, 100% { opacity: 0.6; }
     50% { opacity: 1; }
 }
 
-/* 3. 確保 Badge 顏色優先級 */
+/* 強制狀態顏色 (加上 !important 確保生效) */
 .badge.online {
     background: rgba(0, 255, 65, 0.1) !important;
-    color: #00ff41 !important;
     border: 1px solid rgba(0, 255, 65, 0.3) !important;
+    color: #00ff41 !important;
 }
-
 .badge.offline {
     background: rgba(255, 62, 62, 0.1) !important;
-    color: #ff3e3e !important;
     border: 1px solid rgba(255, 62, 62, 0.3) !important;
-}
-/* =========================================
-   7. 手機版適配 (Responsive)
-   ========================================= */
-@media (max-width: 768px) {
-    /* 導覽列優化 */
-    .navbar {
-        flex-direction: column;
-        padding: 1rem 0;
-    }
-    .nav-links {
-        margin-top: 10px;
-        gap: 1.2rem;
-    }
-    .nav-links a { font-size: 0.85rem; }
-
-    /* 字體縮放 */
-    .title { font-size: 2.8rem !important; }
-    .section-title { font-size: 1.8rem; }
-    
-    /* 里程碑線條修正 */
-    .timeline-container::before { left: 15px; }
-    .timeline-item { padding-left: 35px; }
-    .timeline-dot { left: 6px; width: 16px; height: 16px; }
-
-    /* 效能優化：減少手機模糊計算 */
-    .glow { width: 300px; height: 300px; filter: blur(80px); }
-    .glass-card { padding: 1.5rem; }
+    color: #ff3e3e !important;
 }
 
-/* =========================================
-   8. 動畫類別
-   ========================================= */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+/* --- 僅新增：指令分頁卡片樣式 --- */
+.commands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
 }
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
+.command-card { padding: 0 !important; overflow: hidden; }
+.terminal-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+.terminal-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ff5f56; }
+.dot.yellow { background: #ffbd2e; }
+.dot.green { background: #27c93f; }
+.command-demo img { width: 100%; height: auto; display: block; }
+.command-info { padding: 1.5rem; }
