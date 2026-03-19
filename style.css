@@ -841,22 +841,27 @@ footer {
 }
 
 /* --- 僅新增：指令影片專屬美化 --- */
-./* --- 僅新增：指令影片專屬美化 --- */
+.command-demo {
+    width: 100%;
+    background: #000;
+    overflow: hidden;
+    line-height: 0; /* 消除影片下方的微小間隙 */
+}
+/* --- 最終修正：確保影片完整顯示不裁切 --- */
 .command-demo video {
     width: 100%;
     height: auto;
-    /* 1. 確保影片比例 (16:9)，防止在手機上拉伸 */
-    aspect-ratio: 16 / 9;
-    /* 2. 智慧裁剪，確保影片填滿容器不留白邊 */
-    object-fit: cover;
+    /* 關鍵 1: 使用 contain 確保影片完整縮放 */
+    object-fit: contain; 
     display: block;
-    /* 3. 延續原本的底線裝飾 */
+    /* 關鍵 2: 背景設為深色，若比例不合會以黑邊補齊而非裁切 */
+    background: #000; 
+    /* 關鍵 3: 移除強制比例，讓它跟隨影片原始比例 */
+    aspect-ratio: auto; 
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    /* 4. [選用]：滑鼠滑過時，影片輕微放大，增加互動感 */
-    transition: transform 0.4s ease;
 }
 
-/* 當卡片被滑過時，影片稍微放大 */
+/* 移除任何會導致溢出的放大效果 */
 .command-card:hover .command-demo video {
-    transform: scale(1.03);
+    transform: none !important;
 }
