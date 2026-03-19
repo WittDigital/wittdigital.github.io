@@ -234,26 +234,41 @@ section {
 }
 
 .section-title {
+    /* 1. 核心置中邏輯 */
+    display: table;           /* 讓寬度剛好等於文字長度 */
+    margin: 0 auto 4rem auto; /* 左右 auto 會自動平分剩餘空間，達成完美置中 */
+    
+    /* 2. 移除原本可能導致位移的代碼 */
+    position: relative;
+    left: 0;                  /* 歸零 */
+    transform: none;          /* 移除位移 */
+    
+    /* 3. 樣式維持 */
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 4rem;
-    position: relative;
-    display: inline-block;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
+/* 裝飾底線修正 */
 .section-title::after {
     content: '';
     position: absolute;
     bottom: -10px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); /* 只有底線需要針對文字寬度做位移 */
     width: 60px;
     height: 4px;
     background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
     border-radius: 2px;
+}
+
+/* 針對手機版 (螢幕寬度小於 768px) 的微調 */
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.8rem;    /* 手機版字體縮小一點比較精緻 */
+        margin-bottom: 2.5rem;
+        padding: 0 15px;      /* 增加一點左右內距，防止文字貼到螢幕邊緣 */
+    }
 }
 
 /* Intro */
@@ -489,4 +504,75 @@ footer {
     border-radius: 50%;
     margin-right: 8px;
     background-color: #888; /* 預設灰燈 */
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem; /* 縮小手機版的標題字體 */
+        line-height: 1.2;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 10px; /* 增加兩側間距避免貼邊 */
+    }
+
+    .hero {
+        padding: 0 20px;
+    }
+
+    /* 讓狀態標籤在手機上更顯眼 */
+    .badge {
+        font-size: 0.8rem;
+        padding: 4px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* 讓 Logo 與連結上下排列 */
+        padding: 1rem 0;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1rem; /* 縮小連結間距 */
+        margin-top: 10px;
+        overflow-x: auto; /* 如果連結太多，允許左右滑動 */
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+        white-space: nowrap; /* 防止連結文字換行 */
+    }
+}
+
+@media (max-width: 768px) {
+    .timeline-container::before {
+        left: 15px; /* 把中間的那條線往左移 */
+    }
+
+    .timeline-item {
+        padding-left: 35px; /* 縮小縮進 */
+    }
+
+    .timeline-dot {
+        left: 6px; /* 調整圓點位置 */
+        width: 16px;
+        height: 16px;
+    }
+
+    .glass-card {
+        padding: 1.5rem; /* 縮小卡片的內邊距 */
+    }
+}
+
+@media (max-width: 768px) {
+    .glow {
+        width: 300px;
+        height: 300px;
+        filter: blur(80px); /* 減輕手機 GPU 負擔 */
+    }
 }
