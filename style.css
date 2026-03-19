@@ -722,19 +722,19 @@ footer {
 /* --- 指令網格佈局 (優化版：區分手機與電腦) --- */
 .commands-grid {
     display: grid;
-    /* 1. 預設寬度 (適用於平板與一般筆電) */
-    grid-template-columns: repeat(auto-fill, minmax(320px, 450px)); 
-    gap: 2.5rem;
-    margin-top: 3rem;
+    /* 1. 預設寬度：從原本的 320px 提升到 480px，讓卡片更有份量 */
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); 
+    gap: 3rem; /* 間距加大，增加呼吸感 */
+    margin: 4rem auto;
+    max-width: 1400px; /* 限制整體的最大寬度，避免在 2K 螢幕上拉得太開 */
     justify-content: center;
 }
 
-/* 2. 電腦版大螢幕優化 (寬度大於 1200px) */
+/* 2. 電腦大螢幕細節：當寬度足夠時，強制每行最多 2 或 3 個，不讓它縮太小 */
 @media (min-width: 1200px) {
     .commands-grid {
-        /* 讓卡片在電腦上更寬，最大可以到 500px，這樣影片細節才清楚 */
-        grid-template-columns: repeat(auto-fill, minmax(400px, 500px));
-        gap: 3rem;
+        /* 這裡設定基礎寬度為 500px，確保影片字體清晰 */
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     }
 }
 
