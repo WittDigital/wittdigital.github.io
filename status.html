@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>系統運行監控 - WittDigital</title>
+    <style>
+        body { background: #1a1a1a; color: #00ff41; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .panel { border: 2px solid #333; padding: 30px; background: #000; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); border-radius: 4px; }
+        .status-row { display: flex; align-items: center; gap: 15px; font-size: 1.2rem; }
+        .indicator { width: 12px; height: 12px; border-radius: 50%; background: #444; box-shadow: 0 0 5px #000; }
+        .online { background: #00ff41; box-shadow: 0 0 10px #00ff41; }
+        .offline { background: #ff3e3e; box-shadow: 0 0 10px #ff3e3e; }
+        .label { color: #888; text-transform: uppercase; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <div class="status-row">
+        <div class="label">System Status:</div>
+        <div id="status-dot" class="indicator"></div>
+        <div id="status-text">INITIALIZING...</div>
+    </div>
+    <div style="margin-top: 10px; font-size: 0.8rem; color: #444;">ID: 1350150988253630476</div>
+</div>
+
+<script>
+    // 配置區域
+    const SERVER_ID = '1330733636219043961'; // 剛才複製的 Server ID
+    const BOT_ID = '1437330597356896309';   // 你的 Bot ID
+
+    async function checkBot() {
+        const dot = document.getElementById('status-dot');
+        const text = document.getElementById('status-text');
+
+        try {
+            // 抓取 Discord 官方 Widget 資料
+            const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+            const data = await response.json();
+
+            // 在在線成員中搜尋 Bot ID
+            const botData = data.members.find(m => m.id === BOT_ID);
+
+            if (botData) {
+                dot.className = 'indicator online';
+                text.innerText = 'OPERATIONAL / ' + botData.status.toUpperCase();
+            } else {
+                dot.className = 'indicator offline';
+                text.innerText = 'OFFLINE / DISCONNECTED';
+            }
+        } catch (err) {
+            text.innerText = 'ERROR: API UNREACHABLE';
+        }
+    }
+
+    // 每 15 秒更新一次
+    setInterval(checkBot, 15000);
+    checkBot();
+</script>
+
+</body>
+</html>
