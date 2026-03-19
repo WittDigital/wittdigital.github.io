@@ -1,27 +1,32 @@
-<script>
 async function updateBotStatus() {
-    const SERVER_ID = '1330733636219043961'; // 你的伺服器 ID
-    const TARGET_BOT_NAME = '\u7dad\u7279witt \u52a9\u624b'; // 你的 Bot 名字
+    const SERVER_ID = '1330733636219043961';
+    // 根據你的 JSON，名稱包含空格，我們直接用字串比對
+    const TARGET_BOT_NAME = '維特witt 助手'; 
     
     const badge = document.getElementById('bot-status-badge');
+    if (!badge) return; // 確保元素存在再執行
+
     const statusText = badge.querySelector('.status-text');
 
     try {
-        // 直接向 Discord 官方獲取數據
-        const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+        // 加上 cache breaker 避免瀏覽器抓到舊資料
+        const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json?t=${Date.now()}`);
         const data = await response.json();
 
-        // 檢查成員名單中是否有你的 Bot
+        // 核心修正：在成員名單中比對「使用者名稱」
         const bot = data.members.find(m => m.username === TARGET_BOT_NAME);
 
-        if (bot && bot.status !== 'offline') {
-            // 正常上線中
-            badge.className = 'badge online';
+        if (bot) {
+            // 只要在 list 裡面，代表在線 (Discord Widget 只會列出 Online 成員)
+            badge.classList.remove('offline');
+            badge.classList.add('online');
             statusText.innerText = '系統運作中';
+            console.log("System Check: Bot is ONLINE");
         } else {
-            // 離線
-            badge.className = 'badge offline';
+            badge.classList.remove('online');
+            badge.classList.add('offline');
             statusText.innerText = '服務離線中';
+            console.log("System Check: Bot is OFFLINE");
         }
     } catch (error) {
         console.error("Status check failed:", error);
@@ -29,7 +34,9 @@ async function updateBotStatus() {
     }
 }
 
-// 啟動後立即檢查一次，隨後每 30 秒循環
-updateBotStatus();
-setInterval(updateBotStatus, 30000);
-</script>
+// 頁面載入後執行
+document.addEventListener('DOMContentLoaded', () => {
+    updateBotStatus();
+    // 每 60 秒更新一次即可，避免觸發 Discord API 的頻率限制
+    setInterval(updateBotStatus, 60000); 
+});
