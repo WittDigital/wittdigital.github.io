@@ -721,9 +721,11 @@ footer {
 
 .commands-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* 將原本的 minmax(320px, 1fr) 修改如下： */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 360px)); /* <-- 固定最大寬度 */
     gap: 2rem;
     margin-top: 3rem;
+    justify-content: center; /* [新增] 當卡片變少時，讓它們保持置中 */
 }
 
 /* 指令卡片外框 (複用部分 glass-card 但取消內距) */
