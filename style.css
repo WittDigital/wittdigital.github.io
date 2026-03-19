@@ -839,3 +839,23 @@ footer {
     color: white;
     box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
+
+/* --- 僅新增：指令影片專屬美化 --- */
+.command-demo video {
+    width: 100%;
+    height: auto;
+    /* 1. 確保影片比例 (16:9)，防止在手機上拉伸 */
+    aspect-ratio: 16 / 9;
+    /* 2. 智慧裁剪，確保影片填滿容器不留白邊 */
+    object-fit: cover;
+    display: block;
+    /* 3. 延續原本的底線裝飾 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* 4. [選用]：滑鼠滑過時，影片輕微放大，增加互動感 */
+    transition: transform 0.4s ease;
+}
+
+/* 當卡片被滑過時，影片稍微放大 */
+.command-card:hover .command-demo video {
+    transform: scale(1.03);
+}
