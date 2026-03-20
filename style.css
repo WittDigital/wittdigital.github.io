@@ -107,15 +107,30 @@ body {
     transition: padding 0.3s ease;
 }
 
+/* --- 導覽列 Logo 樣式修正 --- */
 .logo {
     font-family: 'Outfit', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 1px;
+    
+    /* 🛠️ [新增] 清除超連結預設樣式 */
+    text-decoration: none; /* 移除底線 */
+    color: var(--text-primary); /* 強制使用你的主文字顏色 (白色)，防止變藍/紫 */
+    
+    display: flex; /* [選用] 確保文字垂直居中 */
+    align-items: center;
 }
 
+/* 確保 <span> 的靛藍色不受影響 */
 .logo span {
     color: var(--accent-1);
+}
+
+/* [選用] 加一個滑鼠懸停效果，讓使用者知道這是可以點擊的 */
+.logo:hover {
+    opacity: 0.8; /* 懸停時輕微變淡 */
+    transition: opacity 0.3s ease;
 }
 
 .nav-links {
