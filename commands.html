@@ -34,10 +34,11 @@
     <div class="command-filters reveal">
         <button class="filter-btn active" data-filter="all">全部指令</button>
         <button class="filter-btn" data-filter="sys">系統管理</button>
-        <button class="filter-btn" data-filter="game">遊戲擴展</button>
         <button class="filter-btn" data-filter="tool">實用工具</button>
+        <button class="filter-btn" data-filter="game">遊戲擴展</button>
+        <button class="filter-btn" data-filter="fun">互動工具</button>
     </div>
-
+//維特你好指令卡片
     <div class="commands-grid">
         <div class="command-card glass-card reveal sys">
             <div class="terminal-header">
@@ -45,54 +46,199 @@
                 <span class="command-name">/維特你好</span>
             </div>
             <div class="command-body">
-                <div class="command-demo"><img src="img/hello.gif" alt="指令演示"></div>
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/%E6%8C%87%E4%BB%A4%E7%B6%AD%E7%89%B9%E4%BD%A0%E5%A5%BD.mp4" type="video/mp4">
+                        您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
                 <div class="command-info">
                     <h3>自我介紹</h3>
-                    <p>讓維特助手向大家打個招呼。</p>
-                    <code class="code-badge">系統管理</code>
+                        <p>讓維特助手自我介紹擁有功能及服務。</p>
+                        <code class="code-badge">系統管理</code>
                 </div>
             </div>
         </div>
-
+//介紹指令指令卡片
+        <div class="command-card glass-card reveal sys">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/介紹指令</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令介紹指令.mp4" type="video/mp4">
+                        您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>指令介紹</h3>
+                        <p>查詢維特助手已支援指令功能及服務。</p>
+                        <code class="code-badge">系統管理</code>
+                </div>
+            </div>
+        </div>
+//伺服資訊指令卡片
+        <div class="command-card glass-card reveal sys">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/伺服資訊</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令伺服資訊.mp4" type="video/mp4">
+                        您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>伺服器資訊</h3>
+                        <p>讓維特助手顯示所在伺服器資訊。</p>
+                        <code class="code-badge">系統管理</code>
+                </div>
+            </div>
+        </div>
+//刪除訊息指令卡片
         <div class="command-card glass-card reveal tool">
-    <div class="terminal-header">
-        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-        <span class="command-name">/刪除訊息</span>
-    </div>
-    <div class="command-body">
-        <div class="command-demo">
-            <video autoplay loop muted playsinline class="demo-video">
-                <source src="assets/film/指令刪除訊息.mp4" type="video/mp4">
-                您的瀏覽器不支援影片播放。
-            </video>
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/刪除訊息 [數量]</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令刪除訊息.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>刪除訊息</h3>
+                        <p>讓維特助手一次幫你刪除指定數量訊息。</p>
+                        <code class="code-badge">實用工具</code>
+                </div>
+            </div>
         </div>
-        <div class="command-info">
-            <h3>刪除訊息</h3>
-            <p>讓維特助手一次幫你刪除指定數量訊息。</p>
-            <code class="code-badge">實用工具</code>
+//發布公告指令卡片
+        <div class="command-card glass-card reveal tool">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/發布公告</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令發布公告.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>公告指令</h3>
+                        <p>維特助手跳出公告模板協助發布一次性公告。</p>
+                        <code class="code-badge">實用工具</code>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
+//硬幣骰子丟硬幣指令卡片
+        <div class="command-card glass-card reveal fun">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/硬幣骰子 丟硬幣</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令硬幣骰子丟硬幣.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>丟硬幣猜正反</h3>
+                        <p>維特助手隨機顯示硬幣讓用戶方便抉擇問題。</p>
+                        <code class="code-badge">互動工具</code>
+                </div>
+            </div>
+        </div>
+//硬幣骰子骰骰子指令卡片
+        <div class="command-card glass-card reveal fun">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/硬幣骰子 骰骰子 [數字]</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令硬幣骰子骰骰子.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>鉉則一個隨機數</h3>
+                        <p>維特助手在設定數字內隨機顯示一個隨機數。</p>
+                        <code class="code-badge">互動工具</code>
+                </div>
+            </div>
+        </div>
+//今日迷因指令卡片
+        <div class="command-card glass-card reveal fun">
+            <div class="terminal-header">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="command-name">/今日迷因</span>
+            </div>
+            <div class="command-body">
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令今日迷因.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
+                <div class="command-info">
+                    <h3>發布迷因</h3>
+                        <p>在meme.tw讀取隨機發布一個謎因梗圖。</p>
+                        <code class="code-badge">互動工具</code>
+                </div>
+            </div>
+        </div>
+//待設定指令卡片
         <div class="command-card glass-card reveal game">
             <div class="terminal-header">
                 <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
                 <span class="command-name">/英雄聯盟</span>
             </div>
             <div class="command-body">
-                <div class="command-demo"><img src="img/lol.gif" alt="LOL 指令"></div>
+                <div class="command-demo">
+                    <video autoplay loop muted playsinline class="demo-video">
+                        <source src="assets/film/指令今日迷因.mp4" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                    </video>
+                </div>
                 <div class="command-info">
-                    <h3>戰績查詢</h3>
-                    <p>即時抓取召喚師目前排位與戰績。</p>
-                    <code class="code-badge">遊戲擴展</code>
+                    <h3>發布迷因</h3>
+                        <p>在meme.tw讀取隨機發布一個謎因梗圖。</p>
+                        <code class="code-badge">遊戲擴展</code>
                 </div>
             </div>
         </div>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
 </section>
 
     <footer>
-        <p>© 2025-2026 witt dcbot. 讓社群變得更強大。</p>
+        <p>© 2025-2026 Witt DCBOT. 讓社群變得更強大。</p>
     </footer>
 
     <script src="script.js"></script>
