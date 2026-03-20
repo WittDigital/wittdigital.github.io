@@ -719,22 +719,27 @@ footer {
     padding-top: 120px; /* 避開固定導覽列 */
 }
 
-/* --- 指令網格佈局 (優化版：區分手機與電腦) --- */
+/* --- 指令網格佈局：解決單張卡片暴走問題 --- */
 .commands-grid {
     display: grid;
-    /* 1. 預設寬度：從原本的 320px 提升到 480px，讓卡片更有份量 */
-    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); 
-    gap: 3rem; /* 間距加大，增加呼吸感 */
-    margin: 4rem auto;
-    max-width: 1400px; /* 限制整體的最大寬度，避免在 2K 螢幕上拉得太開 */
-    justify-content: center;
+    /* 關鍵修改：將 1fr 換成固定的最大值 430px */
+    /* repeat(auto-fill, ...) 會根據容器寬度自動填充，但每張卡片限制在 430px */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 430px)); 
+    
+    gap: 2.5rem;
+    margin: 3rem auto;
+    max-width: 1200px; /* 限制整體容器寬度 */
+    
+    /* 當卡片只有一張或兩張時，這行能確保它們在螢幕水平居中 */
+    justify-content: center; 
 }
 
-/* 2. 電腦大螢幕細節：當寬度足夠時，強制每行最多 2 或 3 個，不讓它縮太小 */
-@media (min-width: 1200px) {
+/* 手機版適配：確保小螢幕下能縮小 */
+@media (max-width: 480px) {
     .commands-grid {
-        /* 這裡設定基礎寬度為 500px，確保影片字體清晰 */
-        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        /* 手機版改回 1fr 讓它滿版，因為 430px 可能會超出小手機螢幕 */
+        grid-template-columns: 1fr; 
+        padding: 0 1rem;
     }
 }
 
