@@ -114,3 +114,26 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         });
     });
 });
+
+// 等待 DOM 載入完成
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 建立觀察器
+    const observerOptions = {
+        threshold: 0.15 // 當元件出現 15% 時觸發
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                // 觸發後就停止觀察，避免重複動畫
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // 尋找所有需要動畫的元件
+    const revealElements = document.querySelectorAll('.reveal');
+    revealElements.forEach(el => revealObserver.observe(el));
+});
