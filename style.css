@@ -758,6 +758,19 @@ footer {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background: #0f0f0f; /* 保持極深色底 */
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: 
+        0 0 15px rgba(99, 102, 241, 0.15), /* 柔和的外發光 */
+        0 4px 6px rgba(0, 0, 0, 0.3); /* 陰影依舊在 */
+    
+    transition: all 0.3s ease;
+}
+
+.command-card:hover {
+    border-color: rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
 }
 
 /* 模擬終端機頂部欄 */
@@ -803,15 +816,17 @@ footer {
 }
 
 .command-info h3 {
+    color: #ffffff;
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
-    color: var(--text-primary);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .command-info p {
-    color: var(--text-secondary);
+    color: #e0e0e0; /* 內文用極淺灰，不要用原本太暗的 secondary色 */
     font-size: 0.95rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
 /* 程式碼標籤樣式 */
