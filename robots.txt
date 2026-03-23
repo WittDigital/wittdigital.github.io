@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wittdigital.github.io/sitemap.xml
