@@ -94,3 +94,71 @@ body {
     .main-layout { flex-direction: column; padding: 1.5rem; }
     .sidebar.active-left { width: 100%; height: auto; position: relative; top: 0; }
 }
+
+/* =========================================
+   Witt3c 專屬：數位掃描轉場效果
+   (不更動原有排版，僅加入掃描靈魂)
+   ========================================= */
+
+/* --- A. 定義掃描遮罩 (Scanning Mask) --- */
+@keyframes scanMask {
+    0% {
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%);
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%);
+    }
+    100% {
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 100%, rgba(0,0,0,0) 100%);
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 100%, rgba(0,0,0,0) 100%);
+    }
+}
+
+/* --- B. 定義粒子消失 (Dissolve) --- */
+@keyframes dissolveOut {
+    0% {
+        opacity: 1;
+        filter: blur(0px) brightness(1);
+        transform: translate3d(-50%, -50%, 0) scale(1.3);
+    }
+    100% {
+        opacity: 0;
+        filter: blur(20px) brightness(2); /* 掃描時發光並模糊 */
+        transform: translate3d(-50%, -50%, 0) scale(1.1); /* 輕微縮小 */
+    }
+}
+
+/* --- C. 應用動畫到初始狀態 (中央 Logo) --- */
+.sidebar.initial-center {
+    /* 移除原本的 cubic-bezier 移動，改用純消失動畫 */
+    transition: none !important; 
+}
+
+/* 當 JS 觸發開場，中央 Logo 開始「溶解消失」 */
+.sidebar.initial-center.run-dissolve {
+    animation: dissolveOut 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- D. 應用動畫到歸位狀態 (左側 Sidebar) --- */
+.sidebar.active-left {
+    /* 初始隱藏，準備被掃描 */
+    opacity: 0; 
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 0%);
+}
+
+/* 當 JS 觸發歸位，左側欄開始「掃描顯現」 */
+.sidebar.active-left.run-scan {
+    opacity: 1;
+    /* 這裡加上一個發光條效果，更像影印機 */
+    box-shadow: 
+        0 0 30px rgba(99, 102, 241, 0.1), /* 品牌色柔光 */
+        inset 0 0 15px rgba(255, 255, 255, 0.05); /* 內部微光 */
+        
+    animation: scanMask 2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    /* 動畫時間稍長，營造緩慢、高級的感覺 */
+}
+
+/* --- E. 自我介紹文字的同步浮現 --- */
+.bio-details.run-scan-text {
+    opacity: 1;
+    transition: opacity 1s ease 1s; /* 在掃描過半後緩慢浮現 */
+}
