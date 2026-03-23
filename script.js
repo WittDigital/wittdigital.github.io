@@ -3,25 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('portal-grid');
 
     if (sidebar && grid) {
-        // 1. 強制讓 sidebar 處於初始狀態 (如果 HTML 沒寫的話)
-        sidebar.classList.add('initial-center');
-
         setTimeout(() => {
-            // 2. 啟動溶解動畫
+            // 1. 中間 Logo 溶解消失
             sidebar.classList.add('run-dissolve');
 
             setTimeout(() => {
-                // 3. 歸位並切換為橫向模式 (重要：移除 initial-center)
+                // 2. 移除中間狀態，切換到左側
                 sidebar.classList.remove('initial-center');
                 sidebar.classList.add('active-left');
-                sidebar.classList.add('run-scan');
                 
-                // 4. 顯示右側網格
+                // 3. 觸發掃描動畫（這時 CSS 會讓 bio-details 自動浮現）
+                sidebar.classList.add('run-scan');
+
                 setTimeout(() => {
                     grid.classList.remove('contents-hidden');
                     grid.classList.add('contents-show');
                 }, 1000);
-            }, 800); // 溶解時間縮短，讓節奏更順
-        }, 500); 
+            }, 800); 
+        }, 1000);
     }
 });
