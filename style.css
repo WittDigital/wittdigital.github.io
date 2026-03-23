@@ -1081,3 +1081,48 @@ footer {
     margin: 0 10px;
     color: rgba(255, 255, 255, 0.2);
 }
+
+/* 返回最上方按鍵基礎樣式 */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.05); /* 玻璃感背景 */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px; /* 稍微方正一點更硬派 */
+    color: var(--accent-1, #00d4ff); /* 使用你的品牌主色 */
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    opacity: 0; /* 預設隱藏 */
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+/* 當按鍵顯示時的類別 (由 JS 控制) */
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.top-text {
+    font-size: 10px;
+    font-weight: bold;
+    margin-top: 2px;
+}
+
+/* Hover 效果：發光感 */
+.back-to-top:hover {
+    background: var(--accent-1, #00d4ff);
+    color: #000;
+    box-shadow: 0 0 20px var(--accent-1, #00d4ff);
+    transform: translateY(-5px);
+}

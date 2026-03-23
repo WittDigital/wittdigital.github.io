@@ -153,3 +153,22 @@ const videoObserver = new IntersectionObserver((entries) => {
 
 // 記得在頁面載入後執行
 document.querySelectorAll('.demo-video').forEach(v => videoObserver.observe(v));
+
+const backToTopBtn = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+    // 當捲動超過 300px 時顯示按鍵
+    if (window.scrollY > 300) {
+        backToTopBtn.classList.add('show');
+    } else {
+        backToTopBtn.classList.remove('show');
+    }
+});
+
+// 點擊後平滑滾動回頂部
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 平滑滾動效果
+    });
+});
