@@ -90,6 +90,14 @@ body {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 768px) {
+    .glass-card, .navbar {
+        /* 將模糊度稍微調低，視覺差異極小，但手機跑起來快很多 */
+        backdrop-filter: blur(8px); 
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
 /* Navigation */
 
 .navbar {
