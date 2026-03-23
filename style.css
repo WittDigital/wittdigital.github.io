@@ -95,13 +95,21 @@ body {
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     display: inline-block;
+    /* 增加這行防止動畫期間背景外洩 */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
 }
 
 .badge { font-size: 0.75rem; letter-spacing: 2px; color: var(--accent-1); margin-bottom: 0.5rem; text-transform: uppercase; }
 .tagline { font-size: 0.9rem; color: var(--text-secondary); }
 
 /* --- 7. 自我介紹文字排版 --- */
-.bio-details { width: 100%; margin-top: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.8s ease;}
+.bio-details {
+    width: 100%;
+    margin-top: 1rem;
+    display: none; /* 預設完全不顯示，不佔空間 */
+    opacity: 0;
+}
 .bio-quote { font-style: italic; color: var(--accent-1); font-size: 0.9rem; margin-bottom: 1rem; border-left: 2px solid var(--accent-1); padding-left: 10px; }
 .bio-description { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
 .bio-list { list-style: none; padding-top: 1rem; border-top: 1px solid var(--glass-border); }
@@ -139,7 +147,7 @@ body {
     .sidebar.active-left { width: 100%; height: auto; position: relative; top: 0; }
 }
 
-.sidebar.active-left .bio-details {
-    opacity: 1;
-    pointer-events: auto;
+.sidebar.active-left.run-scan .bio-details {
+    display: block; /* 歸位後才出現 */
+    animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
