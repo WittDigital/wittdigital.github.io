@@ -1,28 +1,24 @@
-/* =========================================
-   Witt3c Portal - 核心動畫控制
-   ========================================= */
-
 document.addEventListener('DOMContentLoaded', () => {
-    const sidebar = document.getElementById('main-header');
+    const sidebar = document.getElementById('main-sidebar');
     const grid = document.getElementById('portal-grid');
     const bioText = document.getElementById('bio-text');
 
-    setTimeout(() => {
-        // 1. Logo 往左移動歸位
-        sidebar.classList.remove('initial-center');
-        sidebar.classList.add('active-left');
-
+    if (sidebar && grid) {
         setTimeout(() => {
-            // 2. 自我介紹文字浮現
-            bioText.classList.remove('contents-hidden');
-            bioText.classList.add('contents-show');
-            
-            // 3. 右側網格卡片浮現
-            setTimeout(() => {
-                grid.classList.remove('contents-hidden');
-                grid.classList.add('contents-show');
-            }, 300);
-        }, 800);
-    }, 1000);
-});
+            // 1. Logo 往左移動
+            sidebar.classList.remove('initial-center');
+            sidebar.classList.add('active-left');
 
+            setTimeout(() => {
+                // 2. 自我介紹與網格同時浮現，但給個微小落差感
+                bioText.classList.remove('contents-hidden');
+                bioText.classList.add('contents-show');
+                
+                setTimeout(() => {
+                    grid.classList.remove('contents-hidden');
+                    grid.classList.add('contents-show');
+                }, 200);
+            }, 800);
+        }, 1000);
+    }
+});

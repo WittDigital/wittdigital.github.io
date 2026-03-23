@@ -1,25 +1,17 @@
-/* =========================================
-   1. 核心變數與基礎設定 (水電總開關)
-   ========================================= */
+/* --- 基礎設定 --- */
 :root {
     --bg-color: #050505;
     --text-primary: #ffffff;
     --text-secondary: #a0a0a0;
-    --accent-1: #6366f1; /* 靛藍 - 維特助手 */
-    --accent-2: #ec4899; /* 粉紅 - 部落格群 */
-    --accent-3: #8b5cf6; /* 紫色 - 報價系統 */
+    --accent-1: #6366f1;
+    --accent-2: #ec4899;
+    --accent-3: #8b5cf6;
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
     --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
-
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
     font-family: 'Noto Sans TC', 'Outfit', sans-serif;
     background-color: var(--bg-color);
@@ -28,281 +20,77 @@ body {
     line-height: 1.6;
 }
 
-/* =========================================
-   2. 背景動態氛圍 (保持你的硬派浪漫)
-   ========================================= */
-.bg-elements {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.glow {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.2; /* 調低主頁背景亮度，讓卡片更突出 */
-    animation: float 20s infinite ease-in-out alternate;
-    will-change: transform;
-}
-
+/* --- 背景動態 --- */
+.bg-elements { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+.glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 20s infinite ease-in-out alternate; }
 .glow-1 { top: -10%; left: -10%; background: radial-gradient(circle, var(--accent-1), transparent 70%); }
-.glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--accent-2), transparent 70%); animation-delay: -5s; }
+.glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--accent-2), transparent 70%); }
+@keyframes float { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(50px,30px,0); } }
 
-@keyframes float {
-    0% { transform: translate3d(0, 0, 0) scale(1); }
-    100% { transform: translate3d(50px, 30px, 0) scale(1.1); }
-}
-
-/* =========================================
-   3. 主入口英雄區 (Portal Hero)
-   ========================================= */
-.portal-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 5%;
-}
-
-.hero-mini {
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.main-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: clamp(3rem, 10vw, 5rem);
-    font-weight: 900;
-    letter-spacing: -2px;
-    margin-bottom: 1rem;
-}
-
-.text-gradient {
-    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-3) 100%);
-
-    -webkit-text-fill-color: transparent;
-}
-
-.tagline {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.8;
-}
-
-/* =========================================
-   4. 入口網格佈局 (ana.sh 核心風格)
-   ========================================= */
-.portal-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    width: 100%;
-    max-width: 1100px;
-}
-
-.portal-card {
-    position: relative;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 2.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                border-color 0.3s ease, 
-                box-shadow 0.3s ease;
-    overflow: hidden;
-}
-
-/* 卡片懸停效果 */
-.portal-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: var(--card-shadow);
-}
-
-.card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    display: block;
-}
-
-.portal-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-}
-
-.portal-card p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-}
-
-/* 分頁專屬色彩指示條 (硬派細節) */
-.portal-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 4px;
-    transition: width 0.4s ease;
-}
-
-.card-bot:hover::after { background: var(--accent-1); width: 100%; }
-.card-blog:hover::after { background: var(--accent-2); width: 100%; }
-.card-app:hover::after { background: var(--accent-3); width: 100%; }
-
-/* =========================================
-   5. 頁尾與統計 (Footer)
-   ========================================= */
-footer {
-    margin-top: 5rem;
-    text-align: center;
-    padding-bottom: 3rem;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-}
-
-.footer-links {
-    margin-bottom: 1.5rem;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.footer-links a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.footer-links a:hover { color: var(--text-primary); }
-
-/* =========================================
-   6. 響應式微調
-   ========================================= */
-@media (max-width: 768px) {
-    .portal-grid {
-        grid-template-columns: 1fr;
-        padding: 0 10px;
-    }
-    .main-title { font-size: 3.5rem; }
-    .portal-card { padding: 2rem; }
-}
-
-/* --- Logo 開場動畫專用 CSS --- */
-
-/* 1. 初始狀態：Logo 在螢幕正中央 */
-.hero-mini.initial-center {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1.5); /* 放大 1.5 倍佔據中心 */
-    text-align: center;
-    z-index: 100;
-    transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); /* 流暢的移動曲線 */
-}
-
-/* 2. 動畫後的狀態：Logo 回到左上角 */
-.hero-mini.active-top {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: translate(0, 0) scale(1);
-    text-align: left; /* 回到左側對齊，更有個人站質感 */
-    margin-bottom: 3rem;
-    margin-top: 2rem;
-}
-
-/* 3. 卡片初始隱藏 */
-.contents-hidden {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-    pointer-events: none;
-}
-
-/* 4. 卡片顯現 */
-.contents-show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* 讓 Tagline 和 Badge 在 Logo 放大時有呼吸感 */
-.hero-mini.initial-center .tagline {
-    animation: fadeInUp 0.8s ease forwards 0.3s;
-}
-
-/* 設定主佈局 */
+/* --- 佈局核心 --- */
 .main-layout {
     display: flex;
     min-height: 100vh;
-    padding: 2rem;
-    gap: 2rem;
+    padding: 3rem;
+    gap: 3rem;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
-/* 側邊欄：初始在中央 */
+/* --- 側邊欄動畫狀態 --- */
 .sidebar.initial-center {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1.2);
-    width: auto;
+    transform: translate(-50%, -50%) scale(1.3);
     text-align: center;
     z-index: 1000;
-    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* 帶點回彈感 */
+    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* 側邊欄：歸位到左側 */
 .sidebar.active-left {
-    position: sticky; /* 固定在左邊 */
-    top: 2rem;
-    width: 350px; /* 固定寬度 */
-    height: calc(100vh - 4rem);
+    position: sticky;
+    top: 3rem;
+    width: 380px;
+    height: calc(100vh - 6rem);
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 32px;
-    padding: 3rem 2rem;
-    text-align: left;
+    padding: 3.5rem 2.5rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    backdrop-filter: blur(20px);
 }
 
-/* 頭貼樣式 */
+/* --- 內部元件 --- */
 .avatar-wrapper {
-    width: 120px;
-    height: 120px;
-    border-radius: 24px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    background: #222; /* 預載顏色 */
+    width: 100px; height: 100px;
+    border-radius: 24px; overflow: hidden;
+    margin: 0 auto 2rem; /* 初始居中 */
+    transition: margin 1s ease;
 }
+.sidebar.active-left .avatar-wrapper { margin: 0 0 2rem 0; } /* 歸位後靠左 */
 
-.avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.main-title { font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 900; }
+.text-gradient { background: linear-gradient(135deg, var(--accent-1), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.badge { font-size: 0.75rem; letter-spacing: 2px; color: var(--accent-1); margin-bottom: 0.5rem; text-transform: uppercase; }
+
+/* --- 右側網格 --- */
+.portal-grid { flex: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-content: start; }
+.portal-card {
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    border-radius: 24px; padding: 2rem; text-decoration: none; color: inherit;
+    transition: 0.3s ease; backdrop-filter: blur(10px);
 }
+.portal-card:hover { transform: translateY(-5px); border-color: var(--accent-1); box-shadow: var(--card-shadow); }
 
-/* 自我介紹文字清單 */
-.bio-list {
-    list-style: none;
-    margin-top: 2rem;
-    color: var(--text-secondary);
-}
+/* --- 動畫控制 --- */
+.contents-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+.contents-show { opacity: 1; transform: translateY(0); pointer-events: auto; transition: 0.8s ease; }
+.bio-list { list-style: none; margin-top: 2rem; }
+.bio-list li { margin-bottom: 0.8rem; color: var(--text-secondary); font-size: 0.95rem; }
 
-.bio-list li {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
+@media (max-width: 1024px) {
+    .main-layout { flex-direction: column; padding: 1.5rem; }
+    .sidebar.active-left { width: 100%; height: auto; position: relative; top: 0; }
 }
