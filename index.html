@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Witt3C | 數位工作室</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
-    
+
     <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
 </head>
+
 <body>
 
     <div class="bg-elements">
@@ -20,19 +24,37 @@
         <div class="glow glow-2"></div>
     </div>
 
-    <main class="portal-container">
-        
-        <header class="hero-mini initial-center" id="main-header">
-    <div class="badge">維特數位生活</div>
-    <h1 class="main-title">WITT<span class="text-gradient">3C</span></h1>
-    <p class="tagline">跨領域開發者 / 水電、電機與代碼的交集</p>
-</header>
+    <div class="main-layout">
 
-<section class="portal-grid contents-hidden" id="portal-grid">
-    
+        <aside class="sidebar initial-center" id="main-header">
+            <div class="avatar-wrapper">
+                <img src="assets/img/avatar.jpg" alt="Witt3c Avatar" class="avatar-img">
+            </div>
 
-        
-            
+            <div class="intro-content">
+                <div class="badge">維特數位生活</div>
+                <h1 class="main-title">WITT<span class="text-gradient">3C</span></h1>
+                <p class="tagline">跨領域開發者 / 水電、電機與代碼的交集</p>
+            </div>
+
+            <div class="bio-details contents-hidden" id="bio-text">
+                <ul class="bio-list">
+                    <li>🛠️ 專業水電工程師</li>
+                    <li>💻 獨立軟體開發者</li>
+                    <li>🛠️ 數位黑手工作室創辦人</li>
+                </ul>
+            </div>
+        </aside>
+
+
+
+
+
+        <section class="portal-grid contents-hidden" id="portal-grid">
+
+
+
+
             <a href="wittdcbot/index.html" class="portal-card card-bot">
                 <span class="card-icon">🤖</span>
                 <h3>維特 DC 助手</h3>
@@ -51,26 +73,28 @@
                 <p>React Native 驅動的行動工作站，支援材料算料與 PDF 自動生成。</p>
             </a>
 
+
+
+            <footer>
+                <div class="footer-links">
+                    <a href="https://github.com/witt3c" target="_blank">GitHub</a>
+                    <a href="mailto:your-email@example.com">Contact</a>
+                </div>
+
+                <p>© 2026 Witt3c Studio. All Rights Reserved.</p>
+
+                <div class="visitor-stats">
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        Total Access: <span id="busuanzi_value_site_pv" class="stats-number">--</span>
+                    </span>
+                </div>
+            </footer>
+
+            </main>
         </section>
-
-        <footer>
-            <div class="footer-links">
-                <a href="https://github.com/witt3c" target="_blank">GitHub</a>
-                <a href="mailto:your-email@example.com">Contact</a>
-            </div>
-            
-            <p>© 2026 Witt3c Studio. All Rights Reserved.</p>
-            
-            <div class="visitor-stats">
-                <span id="busuanzi_container_site_pv" style="display:none">
-                    Total Access: <span id="busuanzi_value_site_pv" class="stats-number">--</span>
-                </span>
-            </div>
-        </footer>
-
-    </main>
-
+    </div>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

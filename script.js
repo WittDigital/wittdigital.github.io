@@ -3,23 +3,26 @@
    ========================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const header = document.getElementById('main-header');
+    const sidebar = document.getElementById('main-header');
     const grid = document.getElementById('portal-grid');
+    const bioText = document.getElementById('bio-text');
 
-    // 確保元件都存在才執行，避免報錯
-    if (header && grid) {
-        // 設定 1 秒的初始延遲
+    setTimeout(() => {
+        // 1. Logo 往左移動歸位
+        sidebar.classList.remove('initial-center');
+        sidebar.classList.add('active-left');
+
         setTimeout(() => {
-            // Logo 開始移動：移除中心狀態，加入頂部狀態
-            header.classList.remove('initial-center');
-            header.classList.add('active-top');
-
-            // Logo 開始移動後，稍等 0.5 秒讓卡片浮現
+            // 2. 自我介紹文字浮現
+            bioText.classList.remove('contents-hidden');
+            bioText.classList.add('contents-show');
+            
+            // 3. 右側網格卡片浮現
             setTimeout(() => {
                 grid.classList.remove('contents-hidden');
                 grid.classList.add('contents-show');
-            }, 500);
-            
-        }, 1000); 
-    }
+            }, 300);
+        }, 800);
+    }, 1000);
 });
+
