@@ -72,7 +72,7 @@ body {
 .sidebar.active-left .avatar-wrapper { margin: 0 0 2rem 0; } /* 歸位後靠左 */
 
 .main-title { font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 900; }
-.text-gradient { background: linear-gradient(135deg, var(--accent-1), var(--accent-3)); /*-webkit-background-clip: text;*/ -webkit-text-fill-color: transparent; }
+.text-gradient { background: linear-gradient(135deg, var(--accent-1), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .badge { font-size: 0.75rem; letter-spacing: 2px; color: var(--accent-1); margin-bottom: 0.5rem; text-transform: uppercase; }
 
 /* --- 右側網格 --- */
