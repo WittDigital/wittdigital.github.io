@@ -54,7 +54,7 @@ async function updateLiveLocation() {
     const led = document.querySelector('#geo-status .status-led');
     
     // ⚠️ 請記得更換成你的 Cloudflare Worker 網址
-    const workerUrl = 'https://你的Worker名稱.workers.dev'; 
+    const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev/'; 
 
     // 初始化狀態
     if (statusText) statusText.innerHTML = '衛星掃描中<span class="loading-dots"></span>';
