@@ -49,7 +49,7 @@ html, body {
     gap: 1.5rem;
     max-height: 85vh;
     overflow-y: auto; /* 萬一卡片太多，只在網格區滾動 */
-    padding-right: 15px; /* 給滾動條預留空間 */
+    padding-right: 10px; /* 給滾動條預留空間 */
     align-content: start;
 }
 
@@ -98,7 +98,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
 }
 
 
@@ -122,21 +122,22 @@ footer {
     display: flex !important;
     flex-direction: row !important; 
     flex-wrap: wrap; 
-    align-items: center;
-    justify-content: flex-start; /* 確保內容從左開始 */
-    gap: 0.9rem;
-    
+    align-items: center !important;
+    justify-content: flex-start !important; /* 確保內容從左開始 */
+    gap: 0.9rem;    
     backdrop-filter: blur(20px);
-    
-    /* 讓佈局切換本身也帶有微小的透明度過渡，掩蓋計算瞬間 */
     transition: opacity 0.3s ease, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .sidebar.active-left .intro-content {
     flex: 1;
-    text-align: left; /* 覆蓋初始狀態的 center */
+    text-align: left !important; /* 強制文字靠左 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 確保內容物（標題、Tagline）靠左排隊 */
     min-width: 200px;
 }
+
 
 /* --- 6. 內部元件細節 --- */
 .avatar-wrapper {
