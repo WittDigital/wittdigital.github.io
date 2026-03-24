@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     grid.classList.remove('contents-hidden');
                     grid.classList.add('contents-show');
                 }, 1000);
-            }, 800);
-        }, 500);
+            }, 1200);
+        }, 1500);
     };
 
     // --- 關鍵修正：判斷圖片是否載入完成 ---

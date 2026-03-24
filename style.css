@@ -148,7 +148,7 @@ body {
     100% { opacity: 0; filter: blur(15px); transform: translate(-50%, -50%) scale(1.1); }
 }
 
-.sidebar.run-dissolve { animation: dissolveOut 0.8s forwards; }
+.sidebar.run-dissolve { animation: dissolveOut 1.2s forwards; }
 .sidebar.active-left.run-scan { animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
 
 /* 響應式 */
