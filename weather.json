@@ -1,0 +1,26 @@
+{
+  "records": {
+    "location": [
+      {
+        "locationName": "嘉義市",
+        "weatherElement": [
+          {"time": [{"parameter": {"parameterName": "晴天"}}]},
+          {},
+          {"time": [{"parameter": {"parameterName": "25"}}]},
+          {},
+          {"time": [{"parameter": {"parameterName": "28"}}]}
+        ]
+      },
+      {
+        "locationName": "臺北市",
+        "weatherElement": [
+          {"time": [{"parameter": {"parameterName": "多雲"}}]},
+          {},
+          {"time": [{"parameter": {"parameterName": "22"}}]},
+          {},
+          {"time": [{"parameter": {"parameterName": "26"}}]}
+        ]
+      }
+    ]
+  }
+}

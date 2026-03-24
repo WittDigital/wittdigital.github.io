@@ -41,44 +41,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
 async function fetchAllWeather() {
-    // 🌟 現在直接讀取你 GitHub 倉庫裡的檔案
-    const url = './weather.json'; 
+    const url = './weather.json'; // 🌟 確保這行路徑正確
 
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error('找不到天氣資料檔');
-        
+        if (!response.ok) {
+            console.error('找不到 weather.json，請確認檔案已上傳至 GitHub');
+            return;
+        }
         const data = await response.json();
-        const locations = data.records.location;
-
-        const container = document.getElementById('weather-grid-container');
-        container.innerHTML = ''; 
-
-        locations.forEach(loc => {
-            const cityName = loc.locationName;
-            const weatherDesc = loc.weatherElement[0].time[0].parameter.parameterName;
-            const minTemp = loc.weatherElement[2].time[0].parameter.parameterName;
-            const maxTemp = loc.weatherElement[4].time[0].parameter.parameterName;
-            
-            let iconClass = 'fas fa-sun';
-            if (weatherDesc.includes('雨')) iconClass = 'fas fa-cloud-showers-heavy';
-            else if (weatherDesc.includes('雲')) iconClass = 'fas fa-cloud-sun';
-
-            const card = document.createElement('div');
-            card.className = 'portal-card weather-item';
-            card.innerHTML = `
-                <i class="${iconClass}"></i>
-                <div class="weather-info">
-                    <div class="city-name">${cityName}</div>
-                    <div class="city-desc">${weatherDesc}</div>
-                    <div class="city-temp">${minTemp}° ~ ${maxTemp}°C</div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error('天氣讀取失敗', error);
-        document.getElementById('weather-grid-container').innerHTML = '天氣模組維護中...';
+        // ... 後續的渲染邏輯 ...
+        console.log('成功讀取本地天氣資料:', data);
+    } catch (e) {
+        console.error('連線失敗:', e);
     }
 }
