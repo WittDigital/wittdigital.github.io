@@ -45,47 +45,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function fetchAllWeather() {
-    console.log("📡 嘗試連接天氣感測器 (weather.json)...");
-    const container = document.getElementById('weather-grid-container');
+    const url = './weather.json'; 
+    const container = document.getElementById('weather-mini-grid');
 
     try {
-        const response = await fetch('./weather.json');
-        console.log("📡 伺服器回應狀態:", response.status);
-
-        if (!response.ok) throw new Error(`找不到檔案 (Status: ${response.status})`);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('找不到數據');
         
         const data = await response.json();
-        console.log("📦 接收到數據:", data);
-
         const locations = data.records.location;
+
         container.innerHTML = ''; 
 
         locations.forEach(loc => {
-            console.log(`📍 正在繪製縣市: ${loc.locationName}`);
             const cityName = loc.locationName;
+            // 氣象署的資料中，0 是描述，2 是最低溫，4 是最高溫
             const weatherDesc = loc.weatherElement[0].time[0].parameter.parameterName;
-            const minTemp = loc.weatherElement[2].time[0].parameter.parameterName;
-            const maxTemp = loc.weatherElement[4].time[0].parameter.parameterName;
+            const temp = loc.weatherElement[2].time[0].parameter.parameterName;
             
-            let iconClass = 'fas fa-sun';
-            if (weatherDesc.includes('雨')) iconClass = 'fas fa-cloud-showers-heavy';
-            else if (weatherDesc.includes('雲')) iconClass = 'fas fa-cloud-sun';
+            let iconClass = 'fa-sun';
+            if (weatherDesc.includes('雨')) iconClass = 'fa-cloud-showers-heavy';
+            else if (weatherDesc.includes('雲')) iconClass = 'fa-cloud-sun';
 
-            const card = document.createElement('div');
-            card.className = 'portal-card weather-item';
-            card.innerHTML = `
-                <i class="${iconClass}"></i>
-                <div class="weather-info">
-                    <div class="city-name">${cityName}</div>
-                    <div class="city-desc">${weatherDesc}</div>
-                    <div class="city-temp">${minTemp}° ~ ${maxTemp}°C</div>
-                </div>
+            const div = document.createElement('div');
+            div.className = 'mini-weather-item';
+            div.innerHTML = `
+                <span class="mini-city-name">${cityName}</span>
+                <span class="mini-city-temp">${temp}°C</span>
+                <i class="fas ${iconClass} mini-city-icon"></i>
             `;
-            container.appendChild(card);
+            container.appendChild(div);
         });
-        console.log("✅ 天氣卡片全數點亮！");
     } catch (e) {
-        console.error('❌ 斷路原因:', e.message);
-        container.innerHTML = `<div style="color: #ff4d4d; padding: 20px;">⚠️ 天氣模組連線失敗: ${e.message}</div>`;
+        container.innerHTML = '感測器數據異常';
     }
 }

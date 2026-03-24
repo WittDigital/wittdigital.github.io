@@ -100,12 +100,18 @@
                 </div>
             </div>
         </aside>
-        
+
         <main class="portal-grid contents-hidden" id="portal-grid">
 
-            <div id="weather-grid-container" style="display: contents;">
-    <div class="weather-loading">感測器全台掃描中...</div>
-</div>
+            <div class="portal-card weather-dashboard-card">
+                <div class="card-header">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h3>全台氣象監控動態</h3>
+                </div>
+                <div id="weather-mini-grid" class="weather-mini-grid">
+                    <div class="weather-loading">感測器全台掃描中...</div>
+                </div>
+            </div>
 
 
 
@@ -141,7 +147,7 @@
             </footer>
         </main>
     </div>
-    
+
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <script src="script.js"></script>
 </body>

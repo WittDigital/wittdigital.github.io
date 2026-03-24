@@ -316,41 +316,59 @@ footer {
 
 
 
-/* 微型天氣卡片 */
-.weather-item {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 1.2rem;
+/* 大卡片容器 */
+.weather-dashboard-card {
+    grid-column: 1 / -1; /* 橫跨整列，更有氣勢 */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    transition: 0.3s ease;
-}
-
-.weather-item:hover {
-    border-color: var(--accent-1);
-    background: rgba(129, 140, 248, 0.05);
-}
-
-.weather-item i {
-    font-size: 1.8rem; /* 縮小一點 */
+    gap: 10px;
     color: var(--accent-1);
-}
-
-.weather-item .city-name {
-    font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 2px;
 }
 
-.weather-item .city-temp {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 900;
+/* 內部的微型格子牆 */
+.weather-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
 }
 
-.weather-item .city-desc {
+/* 縣市微型標籤 */
+.mini-weather-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.mini-weather-item:hover {
+    background: rgba(129, 140, 248, 0.1);
+    border-color: var(--accent-1);
+}
+
+.mini-city-name {
     font-size: 0.75rem;
     color: var(--text-secondary);
+}
+
+.mini-city-temp {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 2px 0;
+}
+
+.mini-city-icon {
+    font-size: 0.9rem;
+    color: var(--accent-1);
 }
