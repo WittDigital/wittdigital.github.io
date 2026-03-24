@@ -183,7 +183,25 @@ body {
 
 
 
-/* --- 聯絡卡片網格 (圖上文下) --- */
+/* 圖示初始狀態：暗灰色 */
+.contact-card i {
+    font-size: 1.4rem;
+    color: #666666; /* 平時較暗 */
+    margin-bottom: 6px;
+    transition: color 0.3s ease, filter 0.3s ease;
+}
+
+/* 文字初始狀態：暗灰色 */
+.contact-card span {
+    font-size: 0.65rem;
+    color: #666666; /* 平時較暗 */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+
+/* --- 聯絡區塊：無邊框發光設計 --- */
 .contact-stack {
     margin-top: 2rem;
     padding-top: 1.5rem;
@@ -193,58 +211,61 @@ body {
 .contact-stack small {
     color: var(--accent-1);
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     font-weight: 700;
     font-size: 0.75rem;
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 三列等分 */
-    gap: 10px;
+    grid-template-columns: repeat(4, 1fr); /* 調整為 4 列排列更緊湊 */
+    gap: 20px 10px; /* 上下間距大一點，左右小一點 */
 }
 
 .contact-card {
     display: flex;
-    flex-direction: column; /* 強制圖上文下 */
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 15px 5px;
-    background: rgba(255, 255, 255, 0.05); /* 稍微加深背景 */
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent; /* 移除背景 */
+    border: none;            /* 移除邊框 */
+    padding: 5px;
+    transition: transform 0.3s ease;
 }
 
-/* 圖示樣式 */
-.contact-card i {
-    font-size: 1.5rem;
-    color: var(--text-secondary); /* 平時暗一點 */
-    margin-bottom: 8px;
-    transition: 0.3s ease;
-}
-
-/* 文字樣式 */
-.contact-card span {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-
-/* --- 滑鼠懸停效果：亮一點、整個都能按 --- */
+/* --- 滑鼠懸停：僅圖標與文字點亮 --- */
 .contact-card:hover {
-    background: rgba(255, 255, 255, 0.12); /* 背景變亮 */
-    border-color: var(--accent-1);
-    transform: translateY(-5px); /* 向上微調 */
+    transform: translateY(-3px); /* 輕微浮動 */
 }
 
 .contact-card:hover i {
-    color: var(--text-primary); /* 圖示變純白亮起 */
-    transform: scale(1.1);
+    color: var(--text-primary); /* 變純白 */
+    /* 增加微弱的光暈效果 */
+    filter: drop-shadow(0 0 8px var(--accent-1)); 
 }
 
 .contact-card:hover span {
-    color: var(--text-primary); /* 文字變純白亮起 */
+    color: var(--text-primary); /* 文字變純白 */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
