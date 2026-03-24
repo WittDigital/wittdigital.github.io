@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function fetchAllWeather() {
-    const API_KEY = '你的API金鑰'; // 🚀 記得填入
+    const API_KEY = 'CWA-D54F73C4-001F-4F3B-88D9-BAA24CB1DD47';
     const targetUrl = `https://opendata.cwa.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=${API_KEY}`;
     
     // 🌟 使用 allOrigins 代理伺服器
