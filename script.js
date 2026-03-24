@@ -134,43 +134,57 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(fetchSteamStatus, 30000); 
 });
 
-async function fetchDiscordStatus() {
+
+
+
+async function updateDiscordStatus() {
     const SERVER_ID = "1330733636219043961";
-    const TARGET_NAME = "小維"; // 換成你的名字
+    const TARGET_NAME = "小維"; // 這是你在 Widget 上的名稱
     
     const container = document.getElementById("discord-status");
+    if (!container) return;
+    
     const statusLed = container.querySelector(".status-led");
     const statusText = container.querySelector(".status-text");
     const avatarImg = document.getElementById("discord-avatar");
 
-    // 1. 進入偵測狀態 (你的招牌動作)
-    statusLed.className = 'status-led'; // 移除顏色
-    statusText.innerHTML = '偵測中<span class="loading-dots"></span>';
+    // 🌟 1. 啟動「偵測中」儀式感
+    statusLed.className = 'status-led'; // 移除所有燈號顏色
+    statusText.innerHTML = '連線偵測中<span class="loading-dots"></span>';
+    statusText.style.opacity = "0.7";
 
     try {
-        // 2. 使用你的 2.5 秒人工延遲 + API 抓取
+        // 🌟 2. 執行你的 2.5 秒人工延遲（讓使用者覺得系統在努力穿透防火牆）
         const [response] = await Promise.all([
             fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json?t=${Date.now()}`),
             new Promise(resolve => setTimeout(resolve, 2500))
         ]);
 
         const data = await response.json();
-        const me = data.members.find(m => m.username === TARGET_NAME);
+        // 在成員清單中撈出「小維」
+        const me = data.members.find(m => m.username === TARGET_NAME || m.id === "2");
 
-        // 3. 判定完成
+        statusText.style.opacity = "1";
+
+        // 🌟 3. 判定結果並亮燈
         if (me && me.status === "online") {
-            statusLed.className = 'status-led led-online';
+            statusLed.className = 'status-led led-online'; // 綠色跳動燈
             statusText.innerText = "目前在線";
-            // 順便更新頭像
-            if (avatarImg && me.avatar_url) avatarImg.src = me.avatar_url;
+            // 如果 Widget 有提供個人頭像，就同步更新
+            if (me.avatar_url) avatarImg.src = me.avatar_url;
         } else {
-            statusLed.className = 'status-led led-offline';
+            statusLed.className = 'status-led led-offline'; // 灰色靜止燈
             statusText.innerText = "目前離線";
         }
     } catch (error) {
-        console.error("Discord 偵測失敗:", error);
+        console.error("Discord Widget Error:", error);
+        statusText.innerText = "連線超時";
         statusLed.className = 'status-led led-offline';
-        statusText.innerText = "連線受阻";
     }
 }
 
+// 頁面加載後啟動，並每 5 分鐘巡邏一次
+document.addEventListener('DOMContentLoaded', () => {
+    updateDiscordStatus();
+    setInterval(updateDiscordStatus, 300000); 
+});
