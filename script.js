@@ -91,33 +91,46 @@ async function fetchAllWeather() {
 
 
 async function fetchSteamStatus() {
-    const steamUrl = './steam_status.json'; // Actions 產出的路徑
-    
-    try {
-        const response = await fetch(steamUrl);
-        if (!response.ok) return;
-        const data = await response.json();
-        
-        // 假設 JSON 結構是 data.response.players[0]
-        const player = data.response.players[0];
-        const avatarImg = document.getElementById('steam-avatar');
-        const statusLed = document.getElementById('steam-led');
-        const statusText = document.getElementById('steam-text');
+    const steamUrl = './steam_status.json'; 
+    const avatarImg = document.getElementById('steam-avatar');
+    const statusLed = document.getElementById('steam-led');
+    const statusText = document.getElementById('steam-text');
 
-        // 更新頭像
+    if (!avatarImg || !statusLed || !statusText) return;
+
+    try {
+        // 加上時間戳防止瀏覽器快取舊資料
+        const response = await fetch(`${steamUrl}?t=${new Date().getTime()}`);
+        const data = await response.json();
+        const player = data.response.players[0];
+
+        // 1. 更新頭像
         avatarImg.src = player.avatarfull;
 
-        // 判斷狀態 (0: 離線, 1: 線上, 2+: 忙碌/離開)
+        // 2. 判斷狀態與顯示文字
+        // personastate: 0:離線, 1:線上, 2:忙碌, 3:離開...
         if (player.personastate > 0) {
             statusLed.className = 'status-led led-online';
-            // 如果正在玩遊戲
-            statusText.innerText = player.gameextrainfo ? `遊戲中: ${player.gameextrainfo}` : "線上";
+            
+            // 如果正在遊戲中，會多出 gameextrainfo 欄位
+            if (player.gameextrainfo) {
+                statusText.innerText = `🎮 ${player.gameextrainfo}`;
+            } else {
+                statusText.innerText = "線上";
+            }
         } else {
             statusLed.className = 'status-led led-offline';
             statusText.innerText = "離線";
         }
     } catch (e) {
-        console.error("Steam 讀取失敗");
+        console.log("Steam 數據尚未就緒或讀取失敗");
     }
 }
+
+// 記得在頁面讀取時執行它
+document.addEventListener('DOMContentLoaded', () => {
+    fetchSteamStatus();
+    // 每 30 秒自動刷新一次網頁上的顯示內容
+    setInterval(fetchSteamStatus, 30000); 
+});
 
