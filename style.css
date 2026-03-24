@@ -27,11 +27,13 @@ html, body {
     height: 100vh; /* 鎖定為視窗高度 */
     padding: 3rem;
     gap: 3rem;
-    max-width: 1600px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0 ;
     box-sizing: border-box;
     align-items: center; /* 讓左右兩區塊垂直置中 */
+    justify-content: flex-start;
 }
+
 
 /* 隱藏側邊欄內部的滾動條（美觀考量） */
 .sidebar.active-left::-webkit-scrollbar {
@@ -40,14 +42,14 @@ html, body {
 
 /* --- 4. 右側網格：自動適應剩餘空間 --- */
 .portal-grid {
-    flex: 1;
+    flex-grow: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
     grid-template-rows: repeat(auto-fill, minmax(180px, 1fr)); /* 讓列高也能自動分配 */
     gap: 1.5rem;
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto; /* 萬一卡片太多，只在網格區滾動 */
-    padding-right: 10px; /* 給滾動條預留空間 */
+    padding-right: 15px; /* 給滾動條預留空間 */
     align-content: start;
 }
 
@@ -98,7 +100,6 @@ footer {
     align-items: center;
     transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
 
 
 /* --- 5. 側邊欄：歸位橫向狀態 (修復版) --- */
@@ -305,4 +306,3 @@ footer {
 .contact-card:hover span {
     color: var(--text-primary); /* 文字變純白 */
 }
-
