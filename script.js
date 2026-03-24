@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     grid.classList.remove('contents-hidden');
                     grid.classList.add('contents-show');
+
+                    fetchAllWeather();
                 }, 800); 
                 
             }, 1000); // 這裡控制 Logo 溶解多久後「瞬移」到左邊
