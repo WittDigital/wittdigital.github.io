@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     grid.classList.add('contents-show');
                 }, 1000);
             }, 1200);
-        }, 1500);
+        }, 2500);
     };
 
     // --- 關鍵修正：判斷圖片是否載入完成 ---
