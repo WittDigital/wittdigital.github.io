@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     grid.classList.add('contents-show');
 
                     fetchAllWeather();
-                    fetchSteamStatus();
                 }, 800); 
                 
             }, 1000); // 這裡控制 Logo 溶解多久後「瞬移」到左邊
@@ -86,35 +85,3 @@ async function fetchAllWeather() {
         console.error('天氣更新失敗', e);
     }
 }
-
-async function fetchSteamStatus() {
-    const steamUrl = './steam_status.json'; // Actions 產出的路徑
-    
-    try {
-        const response = await fetch(steamUrl);
-        if (!response.ok) return;
-        const data = await response.json();
-        
-        // 假設 JSON 結構是 data.response.players[0]
-        const player = data.response.players[0];
-        const avatarImg = document.getElementById('steam-avatar');
-        const statusLed = document.getElementById('steam-led');
-        const statusText = document.getElementById('steam-text');
-
-        // 更新頭像
-        avatarImg.src = player.avatarfull;
-
-        // 判斷狀態 (0: 離線, 1: 線上, 2+: 忙碌/離開)
-        if (player.personastate > 0) {
-            statusLed.className = 'status-led led-online';
-            // 如果正在玩遊戲
-            statusText.innerText = player.gameextrainfo ? `遊戲中: ${player.gameextrainfo}` : "線上";
-        } else {
-            statusLed.className = 'status-led led-offline';
-            statusText.innerText = "離線";
-        }
-    } catch (e) {
-        console.error("Steam 讀取失敗");
-    }
-}
-
