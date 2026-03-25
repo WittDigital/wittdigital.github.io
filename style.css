@@ -386,16 +386,22 @@ footer {
     justify-content: center;
 }
 
-.monitor-grid {
-    display: flex;             /* 改用 flex 讓內容緊湊 */
-    justify-content: space-around; /* 讓三個項目在有限寬度內均勻分布 */
+/* .monitor-grid {
+    display: flex;              改用 flex 讓內容緊湊 
+    justify-content: space-around;  讓三個項目在有限寬度內均勻分布 
     align-items: flex-start;
-    /*justify-content: center;    讓三個項目整體置中 */
-    gap: 2rem;                /* 這裡可以手動控制三個項目之間的距離，你可以根據喜好調整 3rem ~ 5rem */
+    /*justify-content: center;    讓三個項目整體置中 
+    gap: 2rem;                 這裡可以手動控制三個項目之間的距離，你可以根據喜好調整 3rem ~ 5rem 
+    text-align: center;
+    width: 100%;
+} */
+.monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 這裡強制分成四行，更整齊 */
+    gap: 1rem;
     text-align: center;
     width: 100%;
 }
-
 
 
 
