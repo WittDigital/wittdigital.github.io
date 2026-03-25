@@ -1,98 +1,86 @@
-/* --- 1. 基礎設定與變數 --- */
+/* ==========================================================================
+   1. 基礎設定與變數 (核心變數與全域清除)
+   ========================================================================== */
 :root { 
-    --bg-color: #050505; --text-primary: #ffffff; --text-secondary: #cccccc; --accent-1: #818cf8; --accent-2: #ec4899; --accent-3: #8b5cf6; --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+    --bg-color: #050505; 
+    --text-primary: #ffffff; 
+    --text-secondary: #cccccc; 
+    --accent-1: #818cf8; 
+    --accent-2: #ec4899; 
+    --accent-3: #8b5cf6; 
+    --glass-bg: rgba(255, 255, 255, 0.03); 
+    --glass-border: rgba(255, 255, 255, 0.08); 
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); 
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
+html, body {
+    height: 100%;
+    overflow: hidden; /* 徹底禁止全頁滾動，鎖定視窗高度 */
     font-family: 'Noto Sans TC', 'Outfit', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    overflow-x: hidden;
     line-height: 1.6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-/* --- 1. 強制鎖定視窗高度，消除滾動條 --- */
-html, body {
-    height: 100%;
-    overflow: hidden; /* 徹底禁止全頁滾動 */
-}
-
-/* --- 2. 佈局核心：填滿視窗但不溢出 --- */
-.main-layout {
-    display: flex;
-    width: 100vw;
-    height: 100vh; /* 鎖定為視窗高度 */
-    padding: 3rem;
-    gap: 3rem;
-    max-width: 100%;
-    margin: 0 ;
-    box-sizing: border-box;
-    align-items: center; /* 讓左右兩區塊垂直置中 */
-    justify-content: flex-start;
-}
-
-
-/* 隱藏側邊欄內部的滾動條（美觀考量） */
-.sidebar.active-left::-webkit-scrollbar {
-    width: 0px;
-}
-
-/* --- 4. 右側網格：自動適應剩餘空間 --- */
-.portal-grid {
-    flex-grow: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-    /* 將 minmax(180px, 1fr) 改為 auto，讓卡片高度隨內容撐開，不再強制 180px */
-    grid-template-rows: auto; 
-    gap: 1.5rem;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding-right: 10px;
-    align-content: start;
-}
-
-/* 自定義右側滾動條樣式 (讓他看起來像科技儀器的一部分) */
-.portal-grid::-webkit-scrollbar {
-    width: 4px;
-}
-.portal-grid::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 10px;
-}
-
-/* --- 5. 頁腳：固定在網格底部或是側邊欄底部 --- */
-footer {
-    grid-column: 1 / -1; /* 橫跨所有欄位 */
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid var(--glass-border);
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-/* --- 2. 背景氛圍 --- */
+/* ==========================================================================
+   2. 背景與氛圍特效
+   ========================================================================== */
 .bg-elements { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
 .glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 20s infinite ease-in-out alternate; }
 .glow-1 { top: -10%; left: -10%; background: radial-gradient(circle, var(--accent-1), transparent 70%); }
 .glow-2 { bottom: -20%; right: -10%; background: radial-gradient(circle, var(--accent-2), transparent 70%); }
-@keyframes float { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(50px,30px,0); } }
 
-
-
-.sidebar {
-    opacity: 0; /* 預設完全隱藏 */
-    transition: opacity 0.5s ease;
+@keyframes float { 
+    0% { transform: translate3d(0,0,0); } 
+    100% { transform: translate3d(50px,30px,0); } 
 }
 
-/* --- 4. 側邊欄：初始中央狀態 --- */
+/* ==========================================================================
+   3. 佈局核心 (Main Layout)
+   ========================================================================== */
+.main-layout {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    padding: 3rem;
+    gap: 3rem;
+    align-items: center; 
+    justify-content: flex-start;
+}
+
+/* --- 右側網格主佈局 (2:1 比例核心) --- */
+.portal-grid {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 強制劃分為 3 等分 */
+    grid-template-rows: auto;
+    gap: 1.5rem;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-right: 15px;
+    align-content: start;
+}
+
+/* 網格滾動條樣式 */
+.portal-grid::-webkit-scrollbar { width: 4px; }
+.portal-grid::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+/* 比例分配 Class */
+.card-size-2 { grid-column: span 2; width: 100%; }
+.card-size-1 { grid-column: span 1; width: 100%; }
+
+/* ==========================================================================
+   4. 側邊欄 (Sidebar)
+   ========================================================================== */
+.sidebar { opacity: 0; transition: opacity 0.5s ease; }
+
+/* 初始中央狀態 */
 .sidebar.initial-center {
     opacity: 1;
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%) scale(1.3);
     text-align: center;
     z-index: 1000;
@@ -102,30 +90,23 @@ footer {
     transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
 }
 
-
-/* --- 5. 側邊欄：歸位橫向狀態 (修復版) --- */
+/* 歸位橫向狀態 */
 .sidebar.active-left {
     flex-shrink: 0;
     opacity: 1 !important;
     position: sticky !important;
     top: 3rem;
-    left: 0;
-    height: fit-content;
-    transform: none !important; 
     width: 420px;
     max-height: 95vh;
-    height: auto;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 32px;
     padding: 1.5rem;
     overflow: hidden;
-    /* 核心修復：強制立即橫向排列，防止跳動 */
     display: flex !important;
     flex-direction: row !important; 
     flex-wrap: wrap; 
     align-items: center !important;
-    justify-content: flex-start !important; /* 確保內容從左開始 */
     gap: 0.9rem;    
     backdrop-filter: blur(20px);
     transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
@@ -133,38 +114,27 @@ footer {
 
 .sidebar.active-left .intro-content {
     flex: 1;
-    text-align: left !important; /* 強制文字靠左 */
+    text-align: left !important;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* 確保內容物（標題、Tagline）靠左排隊 */
+    align-items: flex-start;
     min-width: 200px;
 }
 
-
-/* --- 6. 內部元件細節 --- */
-.avatar-wrapper {
-    width: 100px; height: 100px;
-    border-radius: 24px; overflow: hidden;
-    background: #1a1a1a;
-    transition: all 1s ease;
-    flex-shrink: 0;
-}
-
-.sidebar.active-left .avatar-wrapper { width: 80px; height: 80px; margin: 0; }
-
+/* 側邊欄內部元件 */
+.avatar-wrapper { width: 100px; height: 100px; border-radius: 24px; overflow: hidden; background: #1a1a1a; transition: all 1s ease; flex-shrink: 0; }
+.sidebar.active-left .avatar-wrapper { width: 80px; height: 80px; }
 .avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.main-title { font-family: 'Outfit', sans-serif; font-size: 3rem; font-weight: 900; transition: font-size 1s ease; }
+.main-title { font-size: 3rem; font-weight: 900; transition: font-size 1s ease; }
 .sidebar.active-left .main-title { font-size: 2.2rem; }
 
-/* 修正紫色方塊問題 */
 .text-gradient {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-3)) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     display: inline-block;
-    /* 增加這行防止動畫期間背景外洩 */
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
 }
@@ -172,23 +142,35 @@ footer {
 .badge { font-size: 0.75rem; letter-spacing: 2px; color: var(--accent-1); margin-bottom: 0.5rem; text-transform: uppercase; }
 .tagline { font-size: 0.9rem; color: var(--text-secondary); }
 
-/* --- 7. 自我介紹文字排版 --- */
-.bio-details {
-    width: 100%;
-    margin-top: 1rem;
-    display: none;
-    opacity: 0;
-    text-align: left !important;
-    overflow: hidden;
-}
+/* 自我介紹與標籤 */
+.bio-details { width: 100%; margin-top: 1rem; display: none; opacity: 0; text-align: left !important; }
+.sidebar.active-left.run-scan .bio-details { display: block; animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
 
 .bio-quote { font-style: italic; color: var(--accent-1); font-size: 0.9rem; margin-bottom: 1rem; border-left: 2px solid var(--accent-1); padding-left: 10px; }
-.bio-description { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; text-align: left !important;}
+.bio-description { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
 .bio-list { list-style: none; padding-top: 1rem; border-top: 1px solid var(--glass-border); }
-.bio-list li { margin-bottom: 0.8rem; color: var(--text-primary); font-size: 0.9rem; }
+.bio-list li { margin-bottom: 0.8rem; font-size: 0.9rem; }
 
-/* --- 8. 右側網格與動畫 --- */
+.skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.tag { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--accent-1); padding: 2px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
 
+/* ==========================================================================
+   5. 聯絡通道 (Contact Stack)
+   ========================================================================== */
+.contact-stack { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
+.contact-stack small { color: var(--accent-1); display: block; margin-bottom: 1.2rem; font-weight: 700; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+.contact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px 10px; }
+.contact-card { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; transition: transform 0.3s ease; }
+.contact-card:hover { transform: translateY(-3px); }
+
+.contact-card i { font-size: 1.4rem; color: #666666; margin-bottom: 6px; transition: all 0.3s ease; }
+.contact-card span { font-size: 0.65rem; color: #666666; font-weight: 500; transition: color 0.3s ease; }
+.contact-card:hover i { color: var(--text-primary); filter: drop-shadow(0 0 8px var(--accent-1)); }
+.contact-card:hover span { color: var(--text-primary); }
+
+/* ==========================================================================
+   6. 卡片通用樣式與動畫
+   ========================================================================== */
 .portal-card {
     background: var(--glass-bg); border: 1px solid var(--glass-border);
     border-radius: 24px; padding: 2rem; text-decoration: none; color: inherit;
@@ -199,188 +181,13 @@ footer {
 .contents-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
 .contents-show { opacity: 1; transform: translateY(0); pointer-events: auto; transition: 0.8s ease; }
 
-/* --- 9. 特效動畫 --- */
-@keyframes scanMask {
-    0% { opacity: 0; clip-path: inset(0 0 100% 0); }
-    100% { opacity: 1; clip-path: inset(0 0 0 0); }
-}
-
-@keyframes dissolveOut {
-    0% { opacity: 1; filter: blur(0px); transform: translate(-50%, -50%) scale(1.3); }
-    100% { opacity: 0; filter: blur(20px); transform: translate(-50%, -50%) scale(1.1); }
-}
-
-.sidebar.run-dissolve {animation: dissolveOut 1.0s forwards;}
-.sidebar.active-left.run-scan { animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
-
-/* 響應式 */
-@media (max-width: 1024px) {
-    .main-layout { flex-direction: column; padding: 1.5rem; }
-    .sidebar.active-left { width: 100%; height: auto; position: relative; top: 0; }
-}
-
-.sidebar.active-left.run-scan .bio-details {
-    display: block; /* 歸位後才出現 */
-    animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-}
-
-/* 技能標籤樣式 */
-.skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.tag {
-    background: rgba(99, 102, 241, 0.1);
-    border: 1px solid rgba(99, 102, 241, 0.2);
-    color: var(--accent-1);
-    padding: 2px 10px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-}
-
-
-
-
-/* 圖示初始狀態：暗灰色 */
-.contact-card i {
-    font-size: 1.4rem;
-    color: #666666; /* 平時較暗 */
-    margin-bottom: 6px;
-    transition: color 0.3s ease, filter 0.3s ease;
-}
-
-/* 文字初始狀態：暗灰色 */
-.contact-card span {
-    font-size: 0.65rem;
-    color: #666666; /* 平時較暗 */
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    transition: color 0.3s ease;
-}
-
-
-/* --- 聯絡區塊：無邊框發光設計 --- */
-.contact-stack {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--glass-border);
-}
-
-.contact-stack small {
-    color: var(--accent-1);
-    display: block;
-    margin-bottom: 1.2rem;
-    font-weight: 700;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 調整為 4 列排列更緊湊 */
-    gap: 20px 10px; /* 上下間距大一點，左右小一點 */
-}
-
-.contact-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    background: transparent; /* 移除背景 */
-    border: none;            /* 移除邊框 */
-    padding: 5px;
-    transition: transform 0.3s ease;
-}
-
-/* --- 滑鼠懸停：僅圖標與文字點亮 --- */
-.contact-card:hover {
-    transform: translateY(-3px); /* 輕微浮動 */
-}
-
-.contact-card:hover i {
-    color: var(--text-primary); /* 變純白 */
-    /* 增加微弱的光暈效果 */
-    filter: drop-shadow(0 0 8px var(--accent-1)); 
-}
-
-.contact-card:hover span {
-    color: var(--text-primary); /* 文字變純白 */
-}
-
-
-
-
-.weather-dashboard-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* 讓內容在卡片垂直空間內置中 */
-    min-height: 180px; /* 如果你希望保持一定高度，在這裡設定，而不是在 Grid */
-    padding: 1.5rem;
-    background: var(--glass-bg);
-}
-.weather-mini-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 20px;
-    width: 100%; /* 確保填滿寬度 */
-    margin: auto 0; /* 再次確保在 Flex 容器中置中 */
-}
-
-.mini-weather-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* 讓城市名與圖示分別靠左右，視覺上會更整齊 */
-    gap: 10px;
-    padding: 6px 0; /* 增加一點點上下間距，消除擠壓感 */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03); /* 增加極細的裝飾線，強化層次感 */
-}
-
-.mini-city-name {
-    font-size: 0.9rem;
-    color: var(--text-primary);
-    min-width: 50px; /* 確保縣市名稱寬度一致，對齊比較好看 */
-}
-
-.mini-city-temp {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--accent-1);
-}
-
-.mini-city-icon {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-
-
-
-
-
-
-
-
-
-
+/* ==========================================================================
+   7. 監控儀表板 (Monitor Dashboard - 最新 5 欄位版)
+   ========================================================================== */
 .monitor-dashboard {
-    /* 1. 核心修正：不再強制橫跨整行，讓它跟隨 Grid 寬度規則 */
-    grid-column: auto; 
-    
-    /* 2. 控制寬度：使其與天氣卡片對齊感一致 */
     width: 100%;
-    max-width: 450px; /* 你可以根據視覺微調這個數值 */
-    
+    max-width: none !important; 
     padding: 1.5rem;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -388,253 +195,69 @@ footer {
 
 .monitor-grid {
     display: grid;
-    /* 強制四列等寬，防止內容過多時自動換行 */
-    grid-template-columns: repeat(4, 1fr); 
-    align-items: flex-start;
-    gap: 0.5rem; /* 稍微縮小間距，確保在小螢幕也能塞下 */
+    grid-template-columns: repeat(5, 1fr); /* 空間變寬，改為 5 欄橫排 */
+    gap: 1rem;
+    align-items: start;
     text-align: center;
     width: 100%;
 }
 
-.monitor-item {
-    min-width: 0; /* 讓 Grid 可以縮放 */
-}
+.monitor-header { font-size: 0.7rem; font-weight: 900; color: var(--text-secondary); letter-spacing: 1px; margin-bottom: 10px; }
+.monitor-avatar-wrapper { width: 60px; height: 60px; margin: 0 auto 10px; border-radius: 50%; padding: 3px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); }
+.monitor-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.monitor-info { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; margin-top: 5px; }
 
-.monitor-header {
-    font-size: 0.7rem;
-    font-weight: 900;
-    color: var(--text-secondary);
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-
-/* 頭像外圈 */
-.monitor-avatar-wrapper {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 10px;
-    border-radius: 50%;
-    padding: 3px;
-    border: 1px solid var(--glass-border);
-    background: rgba(0,0,0,0.2);
-}
-
-.monitor-avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* 狀態列佈局 */
-.monitor-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    margin-top: 5px; /* 增加一點點上方間距，讓燈號不會貼在頭像下方 */
-}
-
-/* --- 🌟 跳動燈號動畫 --- */
-.status-led {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-}
-
-/* 上線：綠燈跳動 */
-.led-online {
-    background: #2ecc71;
-    box-shadow: 0 0 8px #2ecc71;
-    animation: led-pulse-green 2s infinite;
-}
-
-/* 離線：灰燈靜止 */
-.led-offline {
-    background: #95a5a6;
-    box-shadow: none;
-}
-
-/* 定位：藍燈緩慢呼吸 */
-.led-location {
-    background: var(--accent-1);
-    box-shadow: 0 0 8px var(--accent-1);
-    animation: led-pulse-blue 3s infinite;
-}
-
-@keyframes led-pulse-green {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.2); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-@keyframes led-pulse-blue {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(1.8); }
-    100% { filter: brightness(1); }
-}
-
-
-
-
-/* 動態點點動畫 */
-.loading-dots::after {
-    content: '.';
-    animation: dots 1.5s steps(5, end) infinite;
-}
-
-@keyframes dots {
-    0%, 20% { content: '.'; }
-    40% { content: '..'; }
-    60% { content: '...'; }
-    80%, 100% { content: ''; }
-}
-
-/* 修正位置圖示盒 */
-.location-icon-box {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.led-steps {
-    background: #f39c12;
-    box-shadow: 0 0 8px #f39c12;
-    animation: led-pulse-orange 2.5s infinite;
-}
-
-@keyframes led-pulse-orange {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(1.5); transform: scale(1.1); }
-    100% { filter: brightness(1); }
-}
-
-#step-status .status-text {
-    font-size: 0.8rem;
-    white-space: nowrap; /* 步數數字不換行 */
-}
-
-#step-status .status-text span {
-    display: block; /* 讓 STEPS 單位出現在數字下方，維持美感 */
-    font-size: 0.6rem;
-    margin-top: -2px;
-}
-
-
-/* 電池容器 */
-/* 電池容器 */
-.battery-container {
-    width: 100%; height: 50px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-}
-
-/* 站立電池外殼 */
-.battery-body {
-    width: 22px; height: 38px;
-    border: 2px solid #555;
-    border-radius: 4px;
-    position: relative;
-    padding: 2px;
-    background: rgba(0,0,0,0.3);
-}
-
-/* 電池正極凸起 */
-.battery-cap {
-    width: 10px; height: 4px;
-    background: #555;
-    position: absolute;
-    top: -6px; left: 50%;
-    transform: translateX(-50%);
-    border-radius: 2px 2px 0 0;
-}
-
-/* 電池填滿層 */
-.battery-level {
-    width: 100%;
-    background: #2ecc71; /* 預設綠色 */
-    position: absolute;
-    bottom: 2px; left: 0;
-    transition: height 0.5s ease, background 0.5s ease;
-    border-radius: 1px;
-}
-
-/* 充電圖示樣式 */
-.charging-icon {
-    position: absolute;
-    color: #ffffff;
-    font-size: 0.8rem;
-    z-index: 10;
-    filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8));
-}
-
-#battery-status .status-text span {
-    display: block; /* 讓 STEPS 單位出現在數字下方，維持美感 */
-    font-size: 0.6rem;
-    margin-top: -2px;
-}
-    
-
-/* 低電量紅燈閃爍動畫 */
-@keyframes led-blink-red {
-    0%, 100% { opacity: 1; background: #ff4757; box-shadow: 0 0 8px #ff4757; }
-    50% { opacity: 0.3; background: #222; box-shadow: none; }
-}
+/* 燈號特效 */
+.status-led { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.led-online { background: #2ecc71; box-shadow: 0 0 8px #2ecc71; animation: led-pulse-green 2s infinite; }
+.led-offline { background: #95a5a6; }
+.led-location { background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); animation: led-pulse-blue 3s infinite; }
+.led-steps { background: #f39c12; box-shadow: 0 0 8px #f39c12; animation: led-pulse-orange 2.5s infinite; }
 .led-low-battery { animation: led-blink-red 1s infinite; }
 
-/* --- 右側網格主佈局：強制 3 欄位基礎 --- */
-.portal-grid {
-    flex-grow: 1;
-    display: grid;
-    /* 強制劃分為 3 個等分，方便 2:1 分配 */
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 1.5rem;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding-right: 15px;
-    align-content: start;
-}
+/* 電池元件 */
+.battery-container { width: 100%; height: 50px; display: flex; align-items: center; justify-content: center; position: relative; }
+.battery-body { width: 22px; height: 38px; border: 2px solid #555; border-radius: 4px; position: relative; padding: 2px; background: rgba(0,0,0,0.3); }
+.battery-cap { width: 10px; height: 4px; background: #555; position: absolute; top: -6px; left: 50%; transform: translateX(-50%); border-radius: 2px 2px 0 0; }
+.battery-level { width: 100%; background: #2ecc71; position: absolute; bottom: 2px; left: 0; transition: height 0.5s ease; border-radius: 1px; }
+.charging-icon { position: absolute; color: #ffffff; font-size: 0.8rem; z-index: 10; filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8)); }
 
-/* --- 比例分配 Class --- */
-.card-size-2 {
-    grid-column: span 2; /* 佔據 2/3 寬度 */
-    width: 100%;
-}
+/* ==========================================================================
+   8. 天氣模組 (Weather Module)
+   ========================================================================== */
+.weather-dashboard-card { display: flex; flex-direction: column; justify-content: center; min-height: 180px; padding: 1.5rem; }
+.weather-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; width: 100%; margin: auto 0; }
+.mini-weather-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+.mini-city-name { font-size: 0.9rem; min-width: 50px; }
+.mini-city-temp { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: var(--accent-1); }
+.mini-city-icon { font-size: 0.9rem; color: var(--text-secondary); }
 
-.card-size-1 {
-    grid-column: span 1; /* 佔據 1/3 寬度 */
-    width: 100%;
-}
+/* ==========================================================================
+   9. 動畫定義 (Animations)
+   ========================================================================== */
+@keyframes scanMask { 0% { opacity: 0; clip-path: inset(0 0 100% 0); } 100% { opacity: 1; clip-path: inset(0 0 0 0); } }
+@keyframes dissolveOut { 0% { opacity: 1; filter: blur(0px); transform: translate(-50%, -50%) scale(1.3); } 100% { opacity: 0; filter: blur(20px); transform: translate(-50%, -50%) scale(1.1); } }
+@keyframes led-pulse-green { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.2); } }
+@keyframes led-pulse-blue { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
+@keyframes led-pulse-orange { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.5); transform: scale(1.1); } }
+@keyframes led-blink-red { 0%, 100% { opacity: 1; background: #ff4757; box-shadow: 0 0 8px #ff4757; } 50% { opacity: 0.3; background: #222; box-shadow: none; } }
+@keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
 
-/* --- 監控卡片：內容優化 --- */
-.monitor-dashboard {
-    /* 移除原本的 max-width 限制，讓它填滿 2/3 的空間 */
-    max-width: none !important; 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+.loading-dots::after { content: '.'; animation: dots 1.5s steps(5, end) infinite; }
+.sidebar.run-dissolve { animation: dissolveOut 1.0s forwards; }
+.sidebar.active-left.run-scan { animation: scanMask 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
 
-.monitor-grid {
-    display: grid;
-    /* 既然空間變寬了，我們把 5 個項目排成一排 */
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 1rem;
-    align-items: start;
-}
-
-/* --- 響應式優化：平板與手機版自動切換 --- */
+/* ==========================================================================
+   10. 響應式佈局 (Responsive)
+   ========================================================================== */
 @media (max-width: 1200px) {
-    .portal-grid {
-        grid-template-columns: 1fr; /* 寬度不夠時，全部變單行 */
-    }
-    .card-size-2, .card-size-1 {
-        grid-column: span 1;
-    }
+    .portal-grid { grid-template-columns: 1fr; }
+    .card-size-2, .card-size-1 { grid-column: span 1; }
+    .monitor-grid { grid-template-columns: repeat(3, 1fr); } /* 手機版監控項改為 3 欄避免太擠 */
+}
+
+@media (max-width: 1024px) {
+    .main-layout { flex-direction: column; padding: 1.5rem; overflow-y: auto; height: auto; }
+    html, body { overflow: auto; } /* 平板以下允許滾動 */
+    .sidebar.active-left { width: 100%; height: auto; position: relative; top: 0; }
 }
