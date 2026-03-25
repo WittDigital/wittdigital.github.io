@@ -200,11 +200,21 @@ async function updateDiscordStatus() {
 }
 
 // --- 📍 OwnTracks + Google Fit 數據串接 ---
+// --- 📍 全能監控中心：位置 + 步數 + 電量 ---
 async function updateLiveLocation() {
+    // 1. 取得所有相關 DOM 元素
+    // 位置
     const geoText = document.querySelector('#geo-status .status-text');
-    const stepText = document.querySelector('#step-status .status-text');
     const geoLed = document.querySelector('#geo-status .status-led');
+    // 步數
+    const stepText = document.querySelector('#step-status .status-text');
     const stepLed = document.querySelector('#step-status .status-led');
+    // 電量
+    const battItem = document.getElementById('battery-status');
+    const battText = battItem ? battItem.querySelector('.status-text') : null;
+    const battFill = document.getElementById('battery-fill');
+    const battLed = document.getElementById('battery-led');
+    const chargingBolt = document.getElementById('charging-bolt');
     
     const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev'; 
 
@@ -213,17 +223,30 @@ async function updateLiveLocation() {
         const data = await response.json();
         
         if (data.name) {
-            // 1. 更新位置：顯示 "嘉義市 西區"，下方顯示微縮時間
-            // 從 "2026/3/25 下午1:49:46" 抓取時間部分
-            const timePart = data.time.split(' ')[1] || ""; 
-            geoText.innerHTML = `
-                ${data.name} 
-                <div style="font-size: 0.6rem; opacity: 0.4; margin-top:2px;">
-                    ${timePart}
-                </div>
-            `;
-            
-            // 2. 更新步數：加上千分位與單位
+            // ======= A. 位置更新 =======
+            if (geoText) {
+                // 解析時間格式：03/25 下午 3 點
+                const parts = data.time.split(' '); 
+                const dateNodes = parts[0].split('/'); 
+                const mm = dateNodes[1].padStart(2, '0');
+                const dd = dateNodes[2].padStart(2, '0');
+                const ampm = parts[1].substring(0, 2);
+                const hour = parts[1].substring(2).split(':')[0];
+                const formattedTime = `${mm}/${dd} ${ampm} ${hour} 點`;
+
+                geoText.innerHTML = `
+                    ${data.name} 
+                    <div style="font-size: 0.6rem; opacity: 0.4; margin-top: 2px;">
+                        更新時間 ${formattedTime}
+                    </div>
+                `;
+            }
+            if (geoLed) {
+                geoLed.style.backgroundColor = '#00ff00';
+                geoLed.style.boxShadow = '0 0 8px #00ff00';
+            }
+
+            // ======= B. 步數更新 =======
             if (stepText) {
                 const stepCount = (data.steps || 0).toLocaleString();
                 stepText.innerHTML = `
@@ -231,69 +254,32 @@ async function updateLiveLocation() {
                     <span style="font-size: 0.65rem; opacity: 0.5; display:block;">STEPS</span>
                 `;
             }
-
-            // 3. 點亮燈號 (成功獲取數據)
-            if (geoLed) {
-                geoLed.className = 'status-led led-location';
-                geoLed.style.backgroundColor = '#00ff00';
-                geoLed.style.boxShadow = '0 0 8px #00ff00';
-            }
             if (stepLed) {
-                stepLed.className = 'status-led led-steps';
-                // 步數可以給它一個橘黃色的呼吸燈效果
                 stepLed.style.backgroundColor = '#f39c12';
                 stepLed.style.boxShadow = '0 0 8px #f39c12';
             }
-        }
-    } catch (error) {
-        console.error("數據更新失敗:", error);
-        if (geoText) geoText.innerText = "感應器離線";
-        if (stepText) stepText.innerText = "NO DATA";
-    }
-}
 
-async function updateLiveLocation() {
-    // 取得 DOM 元素
-    const battItem = document.getElementById('battery-status');
-    const battText = battItem ? battItem.querySelector('.status-text') : null;
-    const battFill = document.getElementById('battery-fill');
-    const battLed = document.getElementById('battery-led');
-    const chargingBolt = document.getElementById('charging-bolt');
-    
-    // 你的 Worker 網址
-    const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev'; 
-
-    try {
-        const response = await fetch(`${workerUrl}?t=${Date.now()}`);
-        const data = await response.json();
-        
-        if (data.name) {
-            // --- 📍 更新位置與時間 (保留你原有的邏輯) ---
-            const locText = document.querySelector('#location-status .status-text');
-            if (locText) locText.innerHTML = `${data.name}<br><small>${data.time}</small>`;
-
-            // --- 🔋 更新手機電量與充電狀態 ---
+            // ======= C. 手機電量更新 =======
             if (battText) {
                 const level = (data.batt !== undefined) ? data.batt : 0;
-                const status = (data.bs !== undefined) ? data.bs : 0; // 2 為正在充電
+                const status = (data.bs !== undefined) ? data.bs : 0;
 
-                // 1. 更新電池填滿高度與顏色分階
                 if (battFill) {
                     battFill.style.height = `${level}%`;
-                    
+                    // 電量顏色與 LED 狀態
                     if (level <= 20) {
-                        battFill.style.backgroundColor = '#ff4757'; // 低電量紅
+                        battFill.style.backgroundColor = '#ff4757';
                         if (battLed) battLed.className = 'status-led led-low-battery';
                     } else if (level <= 50) {
-                        battFill.style.backgroundColor = '#f1c40f'; // 中電量黃
+                        battFill.style.backgroundColor = '#f1c40f';
                         if (battLed) battLed.className = 'status-led led-online';
                     } else {
-                        battFill.style.backgroundColor = '#2ecc71'; // 高電量綠
+                        battFill.style.backgroundColor = '#2ecc71';
                         if (battLed) battLed.className = 'status-led led-online';
                     }
                 }
 
-                // 2. 判斷充電中狀態 (bs === 2)
+                // 充電雷電標示
                 let statusSuffix = "";
                 if (status === 2) {
                     statusSuffix = " <span style='color:#f1c40f; font-size:0.7rem; font-weight:bold;'>⚡充電中</span>";
@@ -301,13 +287,11 @@ async function updateLiveLocation() {
                 } else {
                     if (chargingBolt) chargingBolt.style.display = 'none';
                 }
-
-                // 3. 渲染文字內容
                 battText.innerHTML = `${level}%${statusSuffix}`;
             }
         }
     } catch (error) {
-        console.error("監控數據抓取失敗:", error);
-        if (battText) battText.innerText = "連線中斷";
+        console.error("監控中心數據同步失敗:", error);
+        if (geoText) geoText.innerText = "衛星訊號中斷";
     }
 }
