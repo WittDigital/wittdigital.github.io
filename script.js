@@ -200,7 +200,7 @@ async function updateDiscordStatus() {
 
 async function updateLiveLocation() {
     const geoText = document.querySelector('#geo-status .status-text');
-    const stepText = document.querySelector('#step-status .status-text'); // 👣 步數文字
+    const stepText = document.querySelector('#step-status .status-text'); // 確保 HTML ID 是 step-status
     const geoLed = document.querySelector('#geo-status .status-led');
     const stepLed = document.querySelector('#step-status .status-led');
     
@@ -211,13 +211,14 @@ async function updateLiveLocation() {
         const data = await response.json();
         
         if (data.name) {
-            // 1. 更新位置 (延用你之前的格式)
-            const updateTime = data.time.split(' ')[1] || "";
-            geoText.innerHTML = `${data.name} <div style="font-size: 0.65rem; opacity: 0.4;">更新時間 ${updateTime}</div>`;
+            // 1. 更新位置
+            // 這裡處理 "下午11:02:36" 抓取中間的時間部分
+            const timeStr = data.time.split(' ')[1] || ""; 
+            geoText.innerHTML = `${data.name} <div style="font-size: 0.65rem; opacity: 0.4; margin-top:2px;">更新時間 ${timeStr}</div>`;
             
-            // 2. 更新步數 👣
+            // 2. 更新步數
             if (stepText) {
-                const stepCount = data.steps.toLocaleString(); // 加上千分位，如 10,234
+                const stepCount = (data.steps || 0).toLocaleString();
                 stepText.innerHTML = `${stepCount} <span style="font-size: 0.7rem; opacity: 0.5;">STEPS</span>`;
             }
 
@@ -230,6 +231,7 @@ async function updateLiveLocation() {
             });
         }
     } catch (error) {
-        if (stepText) stepText.innerText = "感應器離線";
+        console.error("位置/步數更新失敗:", error);
+        if (geoText) geoText.innerText = "感應器離線";
     }
 }
