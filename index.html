@@ -152,19 +152,20 @@
                     </div>
 
                     <div class="monitor-item" id="battery-status">
-                        <div class="monitor-header"><i class="fas fa-mobile-alt"></i> 手機電量</div>
+                        <div class="monitor-header"><i class="fas fa-bolt"></i> 手機電量</div>
                         <div class="monitor-avatar-wrapper">
                             <div class="battery-container">
                                 <div class="battery-body">
                                     <div class="battery-cap"></div>
-                                    <div class="battery-level" id="battery-fill"></div>
+                                    <div id="battery-fill" class="battery-level" style="height: 0%;"></div>
                                 </div>
-                                <i class="fas fa-bolt charging-icon" id="charging-bolt" style="display: none;"></i>
+                                <i id="charging-bolt" class="fas fa-charging-station charging-icon"
+                                    style="display: none;"></i>
                             </div>
                         </div>
                         <div class="monitor-info">
-                            <span class="status-led" id="battery-led"></span>
-                            <span class="status-text" id="battery-text">偵測中...</span>
+                            <span id="battery-led" class="status-led"></span>
+                            <span class="status-text">載入中...</span>
                         </div>
                     </div>
 

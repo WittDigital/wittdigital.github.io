@@ -253,12 +253,14 @@ async function updateLiveLocation() {
 }
 
 async function updateLiveLocation() {
-    // ... 原有的變數定義 ...
-    const battText = document.querySelector('#battery-status .status-text');
+    // 取得 DOM 元素
+    const battItem = document.getElementById('battery-status');
+    const battText = battItem ? battItem.querySelector('.status-text') : null;
     const battFill = document.getElementById('battery-fill');
     const battLed = document.getElementById('battery-led');
     const chargingBolt = document.getElementById('charging-bolt');
     
+    // 你的 Worker 網址
     const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev'; 
 
     try {
@@ -266,40 +268,46 @@ async function updateLiveLocation() {
         const data = await response.json();
         
         if (data.name) {
-            // --- 📍 原有的位置與步數更新代碼 ... ---
+            // --- 📍 更新位置與時間 (保留你原有的邏輯) ---
+            const locText = document.querySelector('#location-status .status-text');
+            if (locText) locText.innerHTML = `${data.name}<br><small>${data.time}</small>`;
 
-            // --- 🔋 手機電量更新邏輯 ---
-            if (battText && data.batt !== undefined) {
-                const level = data.batt;
-                const status = data.bs; // 0=unknown, 1=unplugged, 2=charging, 3=full
+            // --- 🔋 更新手機電量與充電狀態 ---
+            if (battText) {
+                const level = (data.batt !== undefined) ? data.batt : 0;
+                const status = (data.bs !== undefined) ? data.bs : 0; // 2 為正在充電
 
-                // 1. 更新電池填滿高度與顏色
-                battFill.style.height = `${level}%`;
-                if (level <= 20) {
-                    battFill.style.backgroundColor = '#ff4757'; // 低電量紅
-                    battLed.className = 'status-led led-low-battery';
-                } else if (level <= 50) {
-                    battFill.style.backgroundColor = '#f1c40f'; // 中電量黃
-                    battLed.className = 'status-led led-online';
-                } else {
-                    battFill.style.backgroundColor = '#2ecc71'; // 高電量綠
-                    battLed.className = 'status-led led-online';
+                // 1. 更新電池填滿高度與顏色分階
+                if (battFill) {
+                    battFill.style.height = `${level}%`;
+                    
+                    if (level <= 20) {
+                        battFill.style.backgroundColor = '#ff4757'; // 低電量紅
+                        if (battLed) battLed.className = 'status-led led-low-battery';
+                    } else if (level <= 50) {
+                        battFill.style.backgroundColor = '#f1c40f'; // 中電量黃
+                        if (battLed) battLed.className = 'status-led led-online';
+                    } else {
+                        battFill.style.backgroundColor = '#2ecc71'; // 高電量綠
+                        if (battLed) battLed.className = 'status-led led-online';
+                    }
                 }
 
-                // 2. 判斷充電狀態 (bs === 2 為正在充電)
+                // 2. 判斷充電中狀態 (bs === 2)
                 let statusSuffix = "";
                 if (status === 2) {
-                    statusSuffix = " <span style='color:#f1c40f; font-size:0.6rem;'>正在充電</span>";
-                    chargingBolt.style.display = 'block'; // 顯示雷電
+                    statusSuffix = " <span style='color:#f1c40f; font-size:0.7rem; font-weight:bold;'>⚡充電中</span>";
+                    if (chargingBolt) chargingBolt.style.display = 'block';
                 } else {
-                    chargingBolt.style.display = 'none'; // 隱藏雷電
+                    if (chargingBolt) chargingBolt.style.display = 'none';
                 }
 
-                // 3. 更新文字顯示
+                // 3. 渲染文字內容
                 battText.innerHTML = `${level}%${statusSuffix}`;
             }
         }
     } catch (error) {
-        console.error("更新失敗:", error);
+        console.error("監控數據抓取失敗:", error);
+        if (battText) battText.innerText = "連線中斷";
     }
 }
