@@ -568,11 +568,18 @@ footer {
 /* 充電圖示樣式 */
 .charging-icon {
     position: absolute;
-    color: #f1c40f;
-    font-size: 1.2rem;
+    color: #ffffff;
+    font-size: 0.8rem;
     z-index: 10;
     filter: drop-shadow(0 0 5px rgba(241, 196, 15, 0.8));
 }
+
+#battery-status .status-text span {
+    display: block; /* 讓 STEPS 單位出現在數字下方，維持美感 */
+    font-size: 0.6rem;
+    margin-top: -2px;
+}
+    
 
 /* 低電量紅燈閃爍動畫 */
 @keyframes led-blink-red {
