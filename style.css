@@ -45,11 +45,12 @@ html, body {
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-    grid-template-rows: repeat(auto-fill, minmax(180px, 1fr)); /* 讓列高也能自動分配 */
+    /* 將 minmax(180px, 1fr) 改為 auto，讓卡片高度隨內容撐開，不再強制 180px */
+    grid-template-rows: auto; 
     gap: 1.5rem;
     max-height: 85vh;
-    overflow-y: auto; /* 萬一卡片太多，只在網格區滾動 */
-    padding-right: 10px; /* 給滾動條預留空間 */
+    overflow-y: auto;
+    padding-right: 10px;
     align-content: start;
 }
 
@@ -315,24 +316,29 @@ footer {
 
 
 
-
 .weather-dashboard-card {
-    padding: 1.5rem; /* 稍微縮小內距讓它更緊湊 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 讓內容在卡片垂直空間內置中 */
+    min-height: 180px; /* 如果你希望保持一定高度，在這裡設定，而不是在 Grid */
+    padding: 1.5rem;
     background: var(--glass-bg);
 }
-
 .weather-mini-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 強制雙欄 */
-    gap: 12px 20px; /* 上下 12px，左右 20px */
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+    width: 100%; /* 確保填滿寬度 */
+    margin: auto 0; /* 再次確保在 Flex 容器中置中 */
 }
 
 .mini-weather-item {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 靠左對齊 */
+    justify-content: space-between; /* 讓城市名與圖示分別靠左右，視覺上會更整齊 */
     gap: 10px;
-    padding: 4px 0;
+    padding: 6px 0; /* 增加一點點上下間距，消除擠壓感 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03); /* 增加極細的裝飾線，強化層次感 */
 }
 
 .mini-city-name {
