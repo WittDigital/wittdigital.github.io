@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // 🌟 自動啟動部落格第一組輪播
                     switchBlog('tech'); 
+                    startLogRoller();
                 }, 800); 
                 
             }, 1000);
@@ -264,3 +265,26 @@ window.switchBlog = function(type, btnElement = null) {
         items[currentIndex].classList.add('active');
     }, 2000); 
 };
+
+function startLogRoller() {
+    const list = document.getElementById('log-list');
+    if (!list) return;
+
+    const items = list.querySelectorAll('.activity-item');
+    if (items.length <= 3) return; // 如果太少條就不滾動
+
+    let index = 0;
+    const itemHeight = 46; // 每個 item 的高度 (含 gap)，需根據實際樣式微調
+
+    setInterval(() => {
+        index++;
+        
+        // 當滾動到底部時，瞬間拉回頂部達成無縫感（或直接循環）
+        if (index > items.length - 3) { 
+            index = 0; 
+        }
+
+        const offset = index * itemHeight;
+        list.style.transform = `translateY(-${offset}px)`;
+    }, 3000); // 每 3 秒滾動一次
+}

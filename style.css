@@ -882,26 +882,46 @@ html, body { height: 100%; overflow: hidden; font-family: 'Noto Sans TC', 'Outfi
 
 
 
-/* 最新動態卡片專用 */
+/* ==========================================================================
+   最新動態卡片 (RECENT_LOGS) - 垂直滾動版
+   ========================================================================== */
+
 .activity-card {
     display: flex;
     flex-direction: column;
     padding: 1rem !important;
+    height: 100%;       /* 確保卡片填滿 grid 格子 */
+    overflow: hidden;   /* 必須隱藏，否則長列表會穿出來 */
 }
 
-.activity-list {
+/* 🌟 新增：滾動視窗控制 */
+.activity-window {
     flex-grow: 1;
+    overflow: hidden;   /* 隱藏視窗外的內容 */
+    position: relative;
+    margin-top: 10px;
+    /* 這裡的高度建議根據實際 grid 大小微調，
+       如果 card-size-1 大約 250px 高，這裡設 180px 左右可以顯示 3-4 條 */
+    height: 180px; 
+}
+
+/* 🌟 修改：列表容器改為絕對定位或位移模式 */
+.activity-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 8px;           /* 項目之間的間距 */
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .activity-item {
+    /* 🌟 固定高度以便 JS 準確計算位移量 (38px 高度 + 8px gap = 46px) */
+    height: 38px;
+    flex-shrink: 0;     
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 10px;
+    padding: 0 10px;    /* 減少上下 padding，因為高度已固定 */
     background: rgba(255, 255, 255, 0.03);
     border-left: 2px solid transparent;
     text-decoration: none;
@@ -929,12 +949,15 @@ html, body { height: 100%; overflow: hidden; font-family: 'Noto Sans TC', 'Outfi
     font-weight: bold;
     flex-shrink: 0;
     font-family: 'Courier New', monospace;
+    min-width: 35px;    /* 讓標籤寬度一致更美觀 */
+    text-align: center;
 }
 
 /* 不同類別的標籤顏色 */
 .tag-dev { background: #3498db; color: white; }
 .tag-fix { background: #f39c12; color: white; }
 .tag-life { background: #9b59b6; color: white; }
+.tag-app { background: #2ecc71; color: white; } /* 新增一個 App 類別 */
 
 .activity-title {
     font-size: 0.8rem;
@@ -958,8 +981,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'Noto Sans TC', 'Outfi
 
 .activity-footer {
     font-size: 0.6rem;
-    opacity: 0.3;
-    margin-top: 10px;
+    opacity: 0.2;       /* 稍微再淡一點，增加層次感 */
+    margin-top: auto;   /* 推到底部 */
+    padding-top: 10px;
     text-align: right;
     letter-spacing: 1px;
 }
@@ -980,6 +1004,3 @@ html, body { height: 100%; overflow: hidden; font-family: 'Noto Sans TC', 'Outfi
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
 }
-
-
-
