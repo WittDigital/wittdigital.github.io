@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('portal-grid');
     const avatarImg = sidebar.querySelector('.avatar-img');
 
+    // --- 1. 開場門戶動畫邏輯 ---
     const startPortalAnimation = () => {
         sidebar.classList.add('initial-center');
 
@@ -17,18 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 sidebar.classList.add('active-left');
                 sidebar.classList.add('run-scan');
                 
-                // 第三階段：顯示右側網格並開始抓取資料
+                // 第三階段：顯示右側網格並啟動數據抓取
                 setTimeout(() => {
                     grid.classList.remove('contents-hidden');
                     grid.classList.add('contents-show');
 
-                    // 🌟 統一在此觸發所有數據串接
+                    // 🌟 啟動所有監控數據
                     fetchAllWeather();
                     fetchSteamStatus();
                     updateDiscordStatus(); 
-                    updateLiveLocation(); // 📍 新增位置感測啟動
                     updateLiveLocation();
-                    updateLiveLocation();
+                    
+                    // 🌟 自動啟動部落格第一組輪播
+                    switchBlog('tech'); 
                 }, 800); 
                 
             }, 1000);
@@ -42,72 +44,100 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(startPortalAnimation, 4000);
     }
 
-    // 設定定時刷新任務
+    // 設定定時刷新任務 (每 5 分鐘)
     setInterval(() => {
         fetchSteamStatus();
         updateDiscordStatus();
-        updateLiveLocation(); // 每 5 分鐘同步位置 (與 Discord 同步頻率)
+        updateLiveLocation(); 
     }, 300000);
 });
 
-// --- 📍 OwnTracks 全自動位置感測 ---
+// --- 2. 📍 全能監控中心：位置 + 步數 + 電量 (OwnTracks + Google Fit) ---
 async function updateLiveLocation() {
-    const statusText = document.querySelector('#geo-status .status-text');
-    const led = document.querySelector('#geo-status .status-led');
+    const geoText = document.querySelector('#geo-status .status-text');
+    const geoLed = document.querySelector('#geo-status .status-led');
+    const stepText = document.querySelector('#step-status .status-text');
+    const stepLed = document.querySelector('#step-status .status-led');
+    const battItem = document.getElementById('battery-status');
+    const battText = battItem ? battItem.querySelector('.status-text') : null;
+    const battFill = document.getElementById('battery-fill');
+    const battLed = document.getElementById('battery-led');
+    const chargingBolt = document.getElementById('charging-bolt');
+    
     const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev'; 
 
     try {
-        const response = await fetch(workerUrl);
+        const response = await fetch(`${workerUrl}?t=${Date.now()}`);
         const data = await response.json();
         
-        if (statusText && data.name) {
-            // --- 🔧 硬派字串拆解法 ---
-            // data.time 範例: "2026/3/24 下午11:02:36"
-            const parts = data.time.split(' '); // 拆成 ["2026/3/24", "下午11:02:36"]
-            const datePart = parts[0];          // "2026/3/24"
-            const timePart = parts[1];          // "下午11:02:36"
+        if (data.name) {
+            // A. 位置更新
+            if (geoText) {
+                const parts = data.time.split(' '); 
+                const dateNodes = parts[0].split('/'); 
+                const mm = dateNodes[1].padStart(2, '0');
+                const dd = dateNodes[2].padStart(2, '0');
+                const ampm = parts[1].substring(0, 2);
+                const hour = parts[1].substring(2).split(':')[0];
+                const formattedTime = `${mm}/${dd} ${ampm} ${hour} 點`;
 
-            // 1. 處理 月/日 (補零)
-            const dateNodes = datePart.split('/'); // ["2026", "3", "24"]
-            const mm = dateNodes[1].padStart(2, '0');
-            const dd = dateNodes[2].padStart(2, '0');
+                geoText.innerHTML = `${data.name} <div style="font-size: 0.6rem; opacity: 0.4; margin-top: 2px;">更新時間 ${formattedTime}</div>`;
+            }
+            if (geoLed) {
+                geoLed.style.backgroundColor = '#00ff00';
+                geoLed.style.boxShadow = '0 0 8px #00ff00';
+            }
 
-            // 2. 處理 下午/上午 與 小時
-            const ampm = timePart.substring(0, 2); // "下午" 或 "上午"
-            const fullTime = timePart.substring(2); // "11:02:36"
-            const hour = fullTime.split(':')[0];    // "11"
+            // B. 步數更新
+            if (stepText) {
+                const stepCount = (data.steps || 0).toLocaleString();
+                stepText.innerHTML = `${stepCount} <span style="font-size: 0.65rem; opacity: 0.5; display:block;">STEPS</span>`;
+            }
+            if (stepLed) {
+                stepLed.style.backgroundColor = '#f39c12';
+                stepLed.style.boxShadow = '0 0 8px #f39c12';
+            }
 
-            // 3. 組合最終格式：03/24 下午 11 點
-            const formattedTime = `${mm}/${dd} ${ampm} ${hour} 點`;
+            // C. 手機電量更新
+            if (battText) {
+                const level = (data.batt !== undefined) ? data.batt : 0;
+                const status = (data.bs !== undefined) ? data.bs : 0;
 
-            // 更新內容
-            statusText.innerHTML = `
-                ${data.name} 
-                <div style="font-size: 0.65rem; opacity: 0.4; margin-top: 2px;">
-                    更新時間 ${formattedTime}
-                </div>
-            `;
-            
-            if (led) {
-                led.style.backgroundColor = '#00ff00'; 
-                led.style.boxShadow = '0 0 8px #00ff00';
+                if (battFill) {
+                    battFill.style.height = `${level}%`;
+                    if (level <= 20) {
+                        battFill.style.backgroundColor = '#ff4757';
+                        if (battLed) battLed.className = 'status-led led-low-battery';
+                    } else if (level <= 50) {
+                        battFill.style.backgroundColor = '#f1c40f';
+                        if (battLed) battLed.className = 'status-led led-online';
+                    } else {
+                        battFill.style.backgroundColor = '#2ecc71';
+                        if (battLed) battLed.className = 'status-led led-online';
+                    }
+                }
+
+                let statusSuffix = "";
+                if (status === 2) {
+                    statusSuffix = " <span style='color:#f1c40f; font-size:0.7rem; font-weight:bold;'>⚡充電中</span>";
+                    if (chargingBolt) chargingBolt.style.display = 'block';
+                } else {
+                    if (chargingBolt) chargingBolt.style.display = 'none';
+                }
+                battText.innerHTML = `${level}%${statusSuffix}`;
             }
         }
     } catch (error) {
-        console.error("定位更新失敗:", error);
-        if (statusText) statusText.innerText = "衛星訊號中斷";
-        if (led) {
-            led.style.backgroundColor = '#ff0000'; 
-        }
+        console.error("監控中心數據同步失敗:", error);
+        if (geoText) geoText.innerText = "衛星訊號中斷";
     }
 }
 
-// --- 氣象串接 ---
+// --- 3. 氣象串接 ---
 async function fetchAllWeather() {
     const url = './weather.json'; 
     const container = document.getElementById('weather-mini-grid');
     if (!container) return;
-
     const targetCities = ['臺北市', '桃園市', '臺中市', '嘉義市', '臺南市', '高雄市', '臺東縣', '花蓮縣'];
 
     try {
@@ -127,18 +157,14 @@ async function fetchAllWeather() {
 
                 const div = document.createElement('div');
                 div.className = 'mini-weather-item';
-                div.innerHTML = `
-                    <span class="mini-city-name">${loc.locationName}</span>
-                    <span class="mini-city-temp">${temp}°C</span>
-                    <i class="fas ${iconClass} mini-city-icon"></i>
-                `;
+                div.innerHTML = `<span class="mini-city-name">${loc.locationName}</span><span class="mini-city-temp">${temp}°C</span><i class="fas ${iconClass} mini-city-icon"></i>`;
                 container.appendChild(div);
             }
         });
     } catch (e) { console.error('天氣更新失敗', e); }
 }
 
-// --- Steam 狀態 ---
+// --- 4. Steam 狀態 ---
 async function fetchSteamStatus() {
     const steamUrl = './steam_status.json'; 
     const avatar = document.getElementById('steam-avatar');
@@ -150,7 +176,6 @@ async function fetchSteamStatus() {
         const response = await fetch(`${steamUrl}?t=${Date.now()}`);
         const data = await response.json();
         const player = data.response.players[0];
-
         avatar.src = player.avatarfull;
         if (player.personastate > 0) {
             led.className = 'status-led led-online';
@@ -162,26 +187,18 @@ async function fetchSteamStatus() {
     } catch (e) { console.log("Steam 讀取中..."); }
 }
 
-// --- Discord 偵測 ---
+// --- 5. Discord 偵測 ---
 async function updateDiscordStatus() {
     const SERVER_ID = "1330733636219043961";
     const TARGET_NAME = "小維"; 
     const container = document.getElementById("discord-status");
     if (!container) return;
-    
     const led = container.querySelector(".status-led");
     const text = container.querySelector(".status-text");
     const avatar = document.getElementById("discord-avatar");
 
-    led.className = 'status-led'; 
-    text.innerHTML = '偵測中<span class="loading-dots"></span>';
-
     try {
-        const [response] = await Promise.all([
-            fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json?t=${Date.now()}`),
-            new Promise(resolve => setTimeout(resolve, 2500)) // 保持 2.5s 儀式感
-        ]);
-
+        const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json?t=${Date.now()}`);
         const data = await response.json();
         const me = data.members.find(m => m.username === TARGET_NAME || m.id === "393579380674134016");
 
@@ -199,134 +216,37 @@ async function updateDiscordStatus() {
     }
 }
 
-// --- 📍 OwnTracks + Google Fit 數據串接 ---
-// --- 📍 全能監控中心：位置 + 步數 + 電量 ---
-async function updateLiveLocation() {
-    // 1. 取得所有相關 DOM 元素
-    // 位置
-    const geoText = document.querySelector('#geo-status .status-text');
-    const geoLed = document.querySelector('#geo-status .status-led');
-    // 步數
-    const stepText = document.querySelector('#step-status .status-text');
-    const stepLed = document.querySelector('#step-status .status-led');
-    // 電量
-    const battItem = document.getElementById('battery-status');
-    const battText = battItem ? battItem.querySelector('.status-text') : null;
-    const battFill = document.getElementById('battery-fill');
-    const battLed = document.getElementById('battery-led');
-    const chargingBolt = document.getElementById('charging-bolt');
-    
-    const workerUrl = 'https://delicate-silence-d26f.witt3c-event.workers.dev'; 
+// --- 6. 🌟 三位一體：分類切換與自動文章輪播 ---
+let autoTimer; 
 
-    try {
-        const response = await fetch(`${workerUrl}?t=${Date.now()}`);
-        const data = await response.json();
-        
-        if (data.name) {
-            // ======= A. 位置更新 =======
-            if (geoText) {
-                // 解析時間格式：03/25 下午 3 點
-                const parts = data.time.split(' '); 
-                const dateNodes = parts[0].split('/'); 
-                const mm = dateNodes[1].padStart(2, '0');
-                const dd = dateNodes[2].padStart(2, '0');
-                const ampm = parts[1].substring(0, 2);
-                const hour = parts[1].substring(2).split(':')[0];
-                const formattedTime = `${mm}/${dd} ${ampm} ${hour} 點`;
+function switchBlog(type, btnElement = null) {
+    // 1. 清除舊定時器
+    if (autoTimer) clearInterval(autoTimer);
 
-                geoText.innerHTML = `
-                    ${data.name} 
-                    <div style="font-size: 0.6rem; opacity: 0.4; margin-top: 2px;">
-                        更新時間 ${formattedTime}
-                    </div>
-                `;
-            }
-            if (geoLed) {
-                geoLed.style.backgroundColor = '#00ff00';
-                geoLed.style.boxShadow = '0 0 8px #00ff00';
-            }
-
-            // ======= B. 步數更新 =======
-            if (stepText) {
-                const stepCount = (data.steps || 0).toLocaleString();
-                stepText.innerHTML = `
-                    ${stepCount} 
-                    <span style="font-size: 0.65rem; opacity: 0.5; display:block;">STEPS</span>
-                `;
-            }
-            if (stepLed) {
-                stepLed.style.backgroundColor = '#f39c12';
-                stepLed.style.boxShadow = '0 0 8px #f39c12';
-            }
-
-            // ======= C. 手機電量更新 =======
-            if (battText) {
-                const level = (data.batt !== undefined) ? data.batt : 0;
-                const status = (data.bs !== undefined) ? data.bs : 0;
-
-                if (battFill) {
-                    battFill.style.height = `${level}%`;
-                    // 電量顏色與 LED 狀態
-                    if (level <= 20) {
-                        battFill.style.backgroundColor = '#ff4757';
-                        if (battLed) battLed.className = 'status-led led-low-battery';
-                    } else if (level <= 50) {
-                        battFill.style.backgroundColor = '#f1c40f';
-                        if (battLed) battLed.className = 'status-led led-online';
-                    } else {
-                        battFill.style.backgroundColor = '#2ecc71';
-                        if (battLed) battLed.className = 'status-led led-online';
-                    }
-                }
-
-                // 充電雷電標示
-                let statusSuffix = "";
-                if (status === 2) {
-                    statusSuffix = " <span style='color:#f1c40f; font-size:0.7rem; font-weight:bold;'>⚡充電中</span>";
-                    if (chargingBolt) chargingBolt.style.display = 'block';
-                } else {
-                    if (chargingBolt) chargingBolt.style.display = 'none';
-                }
-                battText.innerHTML = `${level}%${statusSuffix}`;
-            }
-        }
-    } catch (error) {
-        console.error("監控中心數據同步失敗:", error);
-        if (geoText) geoText.innerText = "衛星訊號中斷";
-    }
-}
-
-
-
-let autoTimer; // 用來存放定時器
-
-function switchBlog(type) {
-    // 1. 清除舊的定時器（避免切換類別時衝突）
-    clearInterval(autoTimer);
-
-    // 2. 切換按鈕與組別顯示
+    // 2. 切換按鈕狀態
     document.querySelectorAll('.t-btn').forEach(btn => btn.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    // 如果是自動呼叫(沒有傳入btn)，則去尋找對應屬性的按鈕
+    const targetBtn = btnElement || document.querySelector(`.t-btn[onclick*="'${type}'"]`);
+    if (targetBtn) targetBtn.classList.add('active');
 
+    // 3. 切換顯示組別
     document.querySelectorAll('.blog-group').forEach(group => group.classList.remove('active'));
     const activeGroup = document.getElementById('group-' + type);
+    if (!activeGroup) return;
     activeGroup.classList.add('active');
 
-    // 3. 重置該組的文章顯示，從第一篇開始
+    // 4. 重置組內文章顯示
     const items = activeGroup.querySelectorAll('.sub-item');
+    if (items.length === 0) return;
+
+    let currentIndex = 0;
     items.forEach(item => item.classList.remove('active'));
     items[0].classList.add('active');
 
-    // 4. 開啟自動輪播
-    let currentIndex = 0;
+    // 5. 啟動自動輪播 (2秒)
     autoTimer = setInterval(() => {
         items[currentIndex].classList.remove('active');
-        currentIndex = (currentIndex + 1) % items.length; // 循環 0, 1, 2
+        currentIndex = (currentIndex + 1) % items.length;
         items[currentIndex].classList.add('active');
-    }, 2000); // 2000 毫秒 = 2 秒
+    }, 2000); 
 }
-
-// 頁面載入時預設啟動第一組
-window.onload = () => {
-    switchBlog('tech');
-};
