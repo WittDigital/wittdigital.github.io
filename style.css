@@ -929,29 +929,18 @@ body {
 
 
 
-
-
-
-
-
-
-
-
 /* ==========================================================================
-   方案三：三位一體切換與自動輪播專用補強
+   方案三：三位一體切換與自動輪播 (整合優化版)
    ========================================================================== */
 
-/* 1. 確保卡片內部高度與佈局 */
 .card-trinity {
     display: flex;
     flex-direction: column;
     gap: 15px;
     padding: 1.2rem !important;
-    min-height: 220px;
-    /* 統一高度，避免切換時跳動 */
+    min-height: 220px; /* 統一高度，防止內容切換時閃爍 */
 }
 
-/* 2. 切換按鈕樣式 */
 .trinity-controls {
     display: flex;
     gap: 10px;
@@ -960,7 +949,27 @@ body {
     flex-shrink: 0;
 }
 
-/* 3. 內容展示區：固定高度以利輪播 */
+/* 切換按鈕樣式 */
+.t-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    padding: 5px 12px;
+    font-size: 0.65rem;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 4px;
+}
+
+.t-btn.active {
+    border-color: var(--accent-1);
+    color: var(--accent-1);
+    background: rgba(129, 140, 248, 0.1);
+    box-shadow: 0 0 10px rgba(129, 140, 248, 0.2);
+}
+
+/* 內容展示容器 */
 .trinity-display {
     position: relative;
     height: 130px;
@@ -968,22 +977,20 @@ body {
     flex-grow: 1;
 }
 
-/* 4. 分組邏輯 */
+/* 部落格類別組 */
 .blog-group {
     display: none;
-    /* 預設全隱藏 */
+    flex-direction: column;
     width: 100%;
 }
 
 .blog-group.active {
-    display: block;
-    /* 只有被選中的類別組顯示 */
+    display: flex;
 }
 
-/* 5. 單篇文章 (sub-item) 輪播邏輯 */
+/* 單篇文章項目 (sub-item) */
 .sub-item {
     display: none;
-    /* 預設隱藏 */
     gap: 20px;
     text-decoration: none;
     color: inherit;
@@ -991,15 +998,15 @@ body {
     align-items: center;
 }
 
-/* 只有 active 的文章才顯示，並套用向上滑入動畫 */
+/* 輪播啟動狀態：向上滑入動畫 */
 .sub-item.active {
     display: flex;
     animation: fadin-up 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
-/* 6. 文章細節樣式優化 */
+/* 縮圖視窗 */
 .preview-img {
-    flex: 0 0 140px;
+    flex: 0 0 140px; /* 固定寬度，讓右側文字空間足夠 */
     height: 90px;
     border-radius: 12px;
     overflow: hidden;
@@ -1012,6 +1019,7 @@ body {
     object-fit: cover;
 }
 
+/* 文字資訊 */
 .preview-text {
     flex: 1;
     display: flex;
@@ -1037,205 +1045,21 @@ body {
     font-size: 0.85rem;
     color: var(--text-secondary);
     line-height: 1.4;
-    /* 限制兩行文字 */
+    /* 限制摘要為兩行，多出的顯示省略號 */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* 7. 輪播動畫：輕微位移 + 透明度變化 */
+/* 輪播淡入動畫 */
 @keyframes fadin-up {
     from {
         opacity: 0;
         transform: translateY(15px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* --- 三位一體切換卡片 --- */
-
-.card-trinity {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 1rem !important;
-}
-
-
-
-.trinity-controls {
-
-    display: flex;
-
-    gap: 10px;
-
-    border-bottom: 1px solid var(--glass-border);
-
-    padding-bottom: 10px;
-
-}
-
-
-
-.t-btn {
-
-    background: transparent;
-
-    border: 1px solid var(--glass-border);
-
-    color: var(--text-secondary);
-
-    padding: 5px 12px;
-
-    font-size: 0.65rem;
-
-    font-family: 'Outfit', sans-serif;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-
-    border-radius: 4px;
-
-}
-
-
-
-.t-btn.active {
-
-    border-color: var(--accent-1);
-
-    color: var(--accent-1);
-
-    background: rgba(129, 140, 248, 0.1);
-
-    box-shadow: 0 0 10px rgba(129, 140, 248, 0.2);
-
-}
-
-
-
-/* 預覽區塊控制 */
-
-.trinity-display {
-    position: relative;
-    height: 130px;
-}
-
-
-
-.blog-preview {
-
-    display: none;
-    /* 預設隱藏 */
-
-    gap: 15px;
-
-    text-decoration: none;
-
-    color: inherit;
-
-    animation: slideIn 0.4s ease forwards;
-
-}
-
-
-
-.blog-preview.active {
-    display: flex;
-}
-
-
-
-.preview-img {
-    flex: 0 0 120px;
-    height: 90px;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.preview-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-
-
-.preview-text h4 {
-    font-size: 1rem;
-    color: #fff;
-    margin: 4px 0;
-}
-
-.preview-text p {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    line-height: 1.4;
-}
-
-.p-cat {
-    font-size: 0.6rem;
-    color: var(--accent-1);
-    font-weight: 700;
-}
-
-
-
-@keyframes slideIn {
-
-    from {
-        opacity: 0;
-        transform: translateX(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-}
-
-.blog-group {
-    display: none;
-    flex-direction: column;
-}
-
-.blog-group.active {
-    display: flex;
-}
-
-
-
-.sub-item {
-    display: none;
-}
-
-.sub-item.active {
-
-    display: flex;
-
-    animation: fadin-up 0.5s ease forwards;
-
-}
-
-
-
-@keyframes fadin-up {
-
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
 }
