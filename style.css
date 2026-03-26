@@ -324,68 +324,127 @@ html, body {
     }
 }
 
-/* --- [3] 標準手機尺寸 (768px 以下) --- */
+
+/* ==========================================================================
+   手機版強力修復包 (768px 以下全屏優化)
+   ========================================================================== */
 @media (max-width: 768px) {
-    /* 調整字體與標題 */
-    .main-title { font-size: 2.2rem; }
-    .sidebar.active-left .main-title { font-size: 1.8rem; }
-    
-    /* 聯絡資訊改為 3 欄，避免太擠 */
-    .contact-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px 5px;
-    }
-
-    /* 監控面板調整：5 欄在手機上太小，改為 2 欄 */
-    .monitor-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-
-    /* 三部落格介紹調整：改為垂直堆疊 */
-    .blog-columns-inner {
-        grid-template-columns: 1fr;
-    }
-
-    .blog-unit {
-        padding: 15px;
-    }
-
-    /* 文章預覽調整：圖片改為上方，文字下方 */
-    .sub-item {
-        flex-direction: column;
+    /* 1. 基礎容器重整：防止左右晃動 (Horizontal Scroll) */
+    html, body {
+        overflow-x: hidden; 
+        width: 100%;
         height: auto;
     }
 
-    .preview-img {
+    .main-layout {
+        display: block; /* 取消 flex，改用區塊排版 */
+        padding: 1rem;  /* 縮小邊距，留給內容空間 */
         width: 100%;
-        height: 180px;
+    }
+
+    /* 2. 側邊欄 (Sidebar) 手機化 */
+    .sidebar.active-left {
+        width: 100% !important;
+        position: relative !important;
+        top: 0 !important;
+        margin-bottom: 1.5rem;
+        border-radius: 20px;
+        padding: 1.2rem;
+        flex-direction: column !important; /* 強制垂直排版 */
+        align-items: center !important;
+    }
+
+    .sidebar.active-left .intro-content {
+        text-align: center !important;
+        align-items: center;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .sidebar.active-left .main-title {
+        font-size: 1.8rem;
+    }
+
+    /* 3. 網格系統 (Grid) 強制單欄 */
+    .portal-grid {
+        display: block; /* 手機版不建議用 grid，改用 block 最穩 */
+        padding-right: 0;
+    }
+
+    .portal-card {
+        width: 100%;
+        margin-bottom: 1.2rem; /* 卡片間距 */
+        padding: 1.2rem !important; /* 縮小內距，避免內容被擠扁 */
+    }
+
+    /* 4. 監控面板 (Monitor Dashboard) 修復 - 改為 2 欄 */
+    .monitor-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 手機版 2 欄最剛好 */
+        gap: 0.8rem;
+    }
+
+    .monitor-avatar-wrapper {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* 5. 三部落格介紹 (Blog Units) - 強制垂直排列 */
+    .blog-columns-inner {
+        display: block;
+    }
+
+    .blog-unit {
+        margin-bottom: 0.8rem;
+        width: 100%;
+    }
+
+    .blog-identity {
+        flex: 0 0 70px; /* 縮小左側頭像寬度 */
+        min-width: 70px;
+    }
+
+    /* 6. 最新文章預覽 (Trinity Display) - 這是最容易破版的地方 */
+    .trinity-display {
+        height: auto;
+        min-height: 300px;
+    }
+
+    .sub-item {
+        flex-direction: column; /* 圖片在上，文字在下 */
+        align-items: center;
+        gap: 10px;
+    }
+
+    .preview-img {
+        width: 100%; /* 圖片撐滿 */
+        height: 150px;
         flex: none;
     }
 
-    .trinity-display {
-        height: auto; /* 解除高度限制 */
-        min-height: 350px;
+    .preview-text {
+        width: 100%;
+        text-align: left;
     }
 
-    .trinity-controls {
-        flex-wrap: wrap; /* 按鈕自動換行 */
-        justify-content: center;
+    .preview-text h4 {
+        font-size: 1rem;
+        white-space: normal; /* 允許標題換行 */
     }
 
-    .t-btn {
-        flex: 1 1 auto;
-        text-align: center;
-    }
-}
-
-/* --- [4] 極小手機 (480px 以下) --- */
-@media (max-width: 480px) {
-    .monitor-grid {
-        grid-template-columns: 1fr; /* 監控項改為單欄 */
+    /* 7. 更新日誌 (System Log) - 防止文字溢出 */
+    .log-item {
+        white-space: normal;
     }
 
+    .log-detail {
+        white-space: normal; /* 允許日誌細節換行，否則手機會看不到尾端 */
+        display: block;
+    }
+
+    /* 8. 聯絡資訊 (Contact Grid) - 4 欄改 3 欄 */
     .contact-grid {
-        grid-template-columns: repeat(2, 1fr); /* 聯絡方式改為 2 欄 */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px 5px;
     }
 }
