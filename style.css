@@ -308,8 +308,8 @@ html, body {
 }
 
 .blog-img-wrapper {
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--glass-border);
@@ -323,7 +323,7 @@ html, body {
 }
 
 .blog-identity h4 {
-    font-size: 0.75rem; /* 稍微縮小字體確保不擠壓 */
+    font-size: 0.95rem; /* 稍微縮小字體確保不擠壓 */
     color: var(--accent-1);
     margin: 0;
     text-align: center;
@@ -344,12 +344,13 @@ html, body {
 }
 
 .blog-desc-side p {
-    font-size: 0.7rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     line-height: 1.4;
-    margin: 0;
+    margin: 2px;
     white-space: nowrap;
 }
+
 
 
 
