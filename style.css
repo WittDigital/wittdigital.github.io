@@ -389,7 +389,7 @@ html, body {
     width: 100%;
     top: 0;
     left: 0;
-    animation: scrollLog 20s linear infinite; /* 如果嫌太慢可以改成 10s 測試 */
+    animation: scrollLog 10s linear infinite;
 }
 
 .log-marquee-content:hover {
