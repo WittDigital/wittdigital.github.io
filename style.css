@@ -271,34 +271,40 @@ html, body {
 
 
 
-/* 三組並排的容器 */
-.blog-columns-container {
+/* 三個單元的總容器 */
+.blog-columns-inner {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-    margin-top: 1.5rem;
+    gap: 1rem;
 }
 
-/* 每一組的內部排版 */
-.blog-column-item {
+/* 單個單元：讓左側識別與右側敘述並排 */
+.blog-unit {
     display: flex;
-    flex-direction: column; /* 讓 [圖+敘述] 跟 [標題] 上下排 */
+    align-items: center; /* 讓左右兩塊垂直置中對齊 */
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.02); /* 微弱的底色區分感 */
+    padding: 10px;
+    border-radius: 12px;
 }
 
-/* 上半部：圖與敘述左右排 */
-.blog-top-row {
+/* 左側識別組：圖上標題下，且水平置中 */
+.blog-identity {
     display: flex;
-    align-items: flex-start; /* 頂部對齊 */
-    gap: 10px;
+    flex-direction: column;
+    align-items: center; /* 讓圖片跟標題置中對齊 */
+    justify-content: center;
+    flex: 0 0 85px; /* 固定這組的寬度 */
 }
 
-/* 圖片縮小一點，騰出空間給右邊敘述 */
+/* 圖片樣式 */
 .blog-img-wrapper {
-    flex: 0 0 60px; /* 固定寬度 70px */
+    width: 60px;
     height: 60px;
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--glass-border);
+    margin-bottom: 8px; /* 圖片與下方標題的間距 */
 }
 
 .blog-img-wrapper img {
@@ -307,9 +313,23 @@ html, body {
     object-fit: cover;
 }
 
-/* 側邊敘述文字 */
+/* 標題樣式：在圖片正下方置中 */
+.blog-identity h4 {
+    font-size: 0.8rem;
+    color: var(--accent-1);
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* 右側敘述組 */
 .blog-desc-side {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid var(--glass-border); /* 加上一條細細的垂直分割線，更有工程感 */
+    padding-left: 12px;
 }
 
 .blog-desc-side p {
@@ -317,29 +337,6 @@ html, body {
     color: var(--text-secondary);
     line-height: 1.4;
     margin: 0;
-    white-space: nowrap; /* 強制一行十個字不換行 */
-}
-
-/* 底部標題 */
-.blog-column-item h4 {
-    font-size: 0.9rem;
-    color: var(--accent-1);
-    margin-top: 10px;
-}
-
-/* 標題與圖示對齊 */
-.blog-intro-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-}
-
-/* 內部橫向排列容器 */
-.blog-columns-inner {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 強制橫向三等分 */
-    gap: 1.5rem;
 }
 
 
