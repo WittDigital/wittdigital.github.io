@@ -266,25 +266,33 @@ window.switchBlog = function(type, btnElement = null) {
     }, 2000); 
 };
 
+// --- 7. 🌟 實時日誌：自動垂直滾動輪播 ---
 function startLogRoller() {
     const list = document.getElementById('log-list');
-    if (!list) return;
+    if (!list) {
+        console.warn("Log滾動失敗：找不到 #log-list 元素");
+        return;
+    }
 
     const items = list.querySelectorAll('.activity-item');
-    if (items.length <= 3) return; // 如果太少條就不滾動
+    console.log("偵測到日誌條數：", items.length); // 除錯用，確認有沒有抓到資料
+
+    // 如果項目不足以填滿視窗（視窗顯示3條），則不啟動滾動
+    if (items.length <= 3) return; 
 
     let index = 0;
-    const itemHeight = 46; // 每個 item 的高度 (含 gap)，需根據實際樣式微調
+    const itemHeight = 46; // 38px(height) + 8px(gap)
 
     setInterval(() => {
         index++;
         
-        // 當滾動到底部時，瞬間拉回頂部達成無縫感（或直接循環）
+        // 修正循環邏輯：
+        // 假設有 5 條，顯示 3 條，index 最大應為 2 (5-3)
         if (index > items.length - 3) { 
             index = 0; 
         }
 
         const offset = index * itemHeight;
         list.style.transform = `translateY(-${offset}px)`;
-    }, 3000); // 每 3 秒滾動一次
+    }, 3500); // 稍微加長一點時間，讓用戶閱讀
 }
