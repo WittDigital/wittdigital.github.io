@@ -355,62 +355,67 @@ html, body {
 
 
 
-/* 字幕機卡片內部對齊 */
+/* --- 更新日誌卡片核心修正 --- */
 .card-blog {
     display: flex;
     flex-direction: column;
-    height: 180px; /* 固定高度 */
-    overflow: hidden;
+    /* 這裡非常重要：限制卡片總高度，且不讓內容撐開 */
+    height: 220px; 
+    max-height: 220px; 
+    overflow: hidden; 
+    position: relative;
 }
 
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
+/* 確保標題高度固定，不參與捲動 */
+.card-blog .card-header {
+    flex: 0 0 auto; 
+    margin-bottom: 10px;
 }
 
-/* 顯示視窗：像一個開口，只看得到中間的部分 */
+/* 顯示視窗：強制佔滿剩餘空間並鎖死高度 */
 .log-marquee-viewport {
-    flex: 1;
+    flex: 1 1 auto; /* 允許伸縮但受限於父層 */
+    height: 100%;   /* 強制繼承高度 */
     overflow: hidden;
     position: relative;
-    mask-image: linear-gradient(transparent, black 20%, black 80%, transparent); /* 上下淡出效果，更有工程感 */
-    -webkit-mask-image: linear-gradient(transparent, black 20%, black 80%, transparent);
+    /* 遮罩效果 */
+    mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
 }
 
 /* 捲動內容容器 */
 .log-marquee-content {
     display: flex;
     flex-direction: column;
-    animation: scrollLog 15s linear infinite; /* 調整秒數可改變捲動速度 */
+    position: absolute; /* 使用絕對定位來脫離文檔流，避免撐開容器 */
+    width: 100%;
+    top: 0;
+    left: 0;
+    animation: scrollLog 20s linear infinite;
 }
 
-/* 當滑鼠移上去時暫停，方便閱讀 */
+/* 滑鼠懸停暫停 */
 .log-marquee-content:hover {
     animation-play-state: paused;
 }
 
-/* 每一行日誌的樣式 */
+/* 日誌項：確保文字溢出時隱藏，不影響寬度 */
 .log-item {
-    font-family: 'monospace'; /* 使用等寬字體，更有代碼感 */
-    font-size: 0.8rem;
+    font-family: 'monospace';
+    font-size: 0.85rem;
     color: var(--accent-1);
-    padding: 6px 0;
+    padding: 8px 0;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 文字過長顯示省略號 */
 }
 
-/* 向上捲動動畫邏輯 */
+/* 動畫邏輯：向上位移 */
 @keyframes scrollLog {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-50%); /* 捲動到一半時重置，達成無縫循環 */
-    }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
 }
-
 
 
 
