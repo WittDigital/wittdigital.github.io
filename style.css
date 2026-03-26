@@ -439,7 +439,7 @@ html, body {
 
 /* 版本號與日期微調 */
 .log-title .v-num {
-    color: var(--accent-1); /* 淺藍紫色，增加層次 */
+    color: var(--accent-1); /* 淺藍紫色增加層次 */
     font-size: 0.75rem;
     background: rgba(139, 92, 246, 0.1);
     padding: 0 5px;
